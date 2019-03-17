@@ -93,8 +93,17 @@ public class NotesActivity extends AppCompatActivity {
         String text = txtnote.getText().toString();
         if (!text.isEmpty()){
             long date = new Date().getTime(); // get current time;
-            Note note = new Note(text,date); //new note
-            dao.insertNote(note); //inserts note record to db;
+
+            if (temp == null){
+                temp = new Note(text,date);
+                dao.insertNote(temp); //inserts note record to db;
+            }
+           else
+            {
+                temp.setNoteText(text);
+                temp.setNoteDate(date);
+                dao.updateNote(temp);
+            }
            // Toast
             finish(); //return to main activity
         }

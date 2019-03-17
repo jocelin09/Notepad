@@ -29,9 +29,9 @@ import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> {
 
-    Context context;
-    ArrayList<Note> notes;
-    NoteListener noteEventListener;
+    private Context context;
+    private ArrayList<Note> notes;
+    private NoteListener noteEventListener;
 
     public  NotesAdapter(Context context, ArrayList<Note> notes){
         this.context = context;
@@ -58,10 +58,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
                 @Override
                 public void onClick(View v) {
                    // noteEventListener
-                    Intent edit = new Intent(context, NotesActivity.class);
-                    edit.putExtra(NOTE_EXTRA_Key, note.getId());
-                    context.startActivity(edit);
+                    noteEventListener.onNoteClick(note);
                     }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    noteEventListener.onNoteLongClick(note);
+                    return false;
+                }
             });
 
         }
@@ -93,5 +99,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
 
         }
     }
+
+    public void setListener(NoteListener listener) {
+        this.noteEventListener = listener;
+    }
+
 
 }

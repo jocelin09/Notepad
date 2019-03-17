@@ -64,4 +64,12 @@ import java.util.Locale;
         DateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy 'at' hh:mm aaa", Locale.US);
         return format.format(new Date(time));
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", noteDate=" + noteDate +
+                '}';
+    }
 }

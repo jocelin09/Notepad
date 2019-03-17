@@ -1,5 +1,7 @@
 package example.jocelinthomas.noteapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,15 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,9 +26,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
 import example.jocelinthomas.noteapp.adapter.NotesAdapter;
+import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
-public class MainActivity extends AppCompatActivity {
+import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
+
+public class MainActivity extends AppCompatActivity implements NoteListener {
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
@@ -97,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
         List<Note> list = dao.getNote();// get All notes from DataBase
         this.noteArrayList.addAll(list);
         this.adapter = new NotesAdapter(this, this.noteArrayList);
+
+        //set listener to adapter
+        this.adapter.setListener(this);
         this.recyclerView.setAdapter(adapter);
         showEmptyRow();
 
@@ -141,5 +148,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onNoteClick(Note note) {
+        Intent edit = new Intent(this, NotesActivity.class);
+        edit.putExtra(NOTE_EXTRA_Key, note.getId());
+        startActivity(edit);
+
+
+        //Toast.makeText(this, "Clicked....... sdfsdfsdfsdf", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNoteLongClick(final Note note) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Note App").setMessage("Are you sure?").
+                setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dao.deleteNote(note);
+                loadNotes(); //refresh items
+            }
+        }).setNegativeButton("Share", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Share", Toast.LENGTH_SHORT).show();
+            }
+        }).setCancelable(false).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).show();
     }
 }
