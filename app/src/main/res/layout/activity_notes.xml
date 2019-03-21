@@ -16,9 +16,32 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+          <!--  <com.skydoves.colorpickerpreference.ColorPickerView
+                android:id="@+id/colorPickerView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:palette="@drawable/palette"
+                android:layout_gravity="right"
+                android:layout_marginRight="5dp"
+                app:selector="@drawable/wheel" />-->
+
+       <!--     <com.skydoves.colorpickerpreference.ColorPickerPreference
+                android:key="@string/ToolbarColorPickerPreference"
+                android:title="Toolbar Color"
+                android:summary="changes toolbar color"
+                app:preference_dialog_title="Toolbar ColorPickerDialog"
+                app:preference_dialog_positive="@string/confirm"
+                app:preference_dialog_negative="@string/cancel"
+                app:preference_palette="@drawable/palette"
+                app:preference_selector="@drawable/wheel"
+                android:layout_gravity="right"
+                app:default_color="@color/colorPrimary"/>-->
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <include layout="@layout/content_notes" />
 

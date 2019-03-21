@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     private Context context;
     private ArrayList<Note> notes;
     private NoteListener noteEventListener;
+    //Action mode for toolbar
+    private ActionMode mActionMode;
 
     public  NotesAdapter(Context context, ArrayList<Note> notes){
         this.context = context;
@@ -48,12 +51,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     public void onBindViewHolder(@NonNull NoteHolder holder, final int position) {
         final Note note = getNote(position);
         if (note !=null){
+            holder.note_title.setText(note.getNoteTitle());
             holder.note_text.setText(note.getNoteText());
             holder.note_date.setText(note.dateFromLong(note.getNoteDate()));
             Random mRandom = new Random();
-            final int color = Color.argb(255, mRandom.nextInt(246), mRandom.nextInt(236), mRandom.nextInt(226));
+            final int color = Color.argb(255, mRandom.nextInt(256), mRandom.nextInt(256), mRandom.nextInt(256));
             ((GradientDrawable) holder.text_icon.getBackground()).setColor(color);
-            holder.text_icon.setText(note.getNoteText().substring(0,1));
+            holder.text_icon.setText(note.getNoteTitle().substring(0,1));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,6 +89,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     public class NoteHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_icon)
         TextView text_icon;
+
+        @BindView(R.id.note_title)
+        TextView note_title;
 
         @BindView(R.id.note_text)
         TextView note_text;

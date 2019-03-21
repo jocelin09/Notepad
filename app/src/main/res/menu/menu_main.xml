@@ -2,9 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="example.jocelinthomas.noteapp.MainActivity">
+<!--
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_checked_count"
+        app:showAsAction="always"
+        android:title="0" />
+    <item
+        android:id="@+id/action_delete_notes"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="always" />-->
+
 </menu>

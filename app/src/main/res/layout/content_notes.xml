@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="example.jocelinthomas.noteapp.NotesActivity"
     tools:showIn="@layout/activity_notes">
 
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/notetitle"
+    android:hint="Title"
+    android:inputType="textCapWords"
+    android:paddingEnd="12dp"
+    android:paddingStart="12dp"
+    android:paddingTop="4dp"
+    />
     <EditText
         android:id="@+id/txtnote"
         android:cursorVisible="true"
@@ -15,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="top"
         android:ems="10"
-        android:hint="Whats in your mind"
+        android:hint="Whats on your mind"
         android:gravity="top"
         android:inputType="textCapSentences|textMultiLine"
         android:paddingEnd="12dp"
@@ -25,4 +36,4 @@
         tools:text="@tools:sample/lorem/random"
         />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

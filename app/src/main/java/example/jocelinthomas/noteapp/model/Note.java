@@ -19,9 +19,11 @@ import java.util.Locale;
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "noteTitle")
+    private String noteTitle;
+
     @ColumnInfo(name = "noteText")
     private String noteText;
-
 
     @ColumnInfo(name = "noteDate")
     private long noteDate;
@@ -30,7 +32,8 @@ import java.util.Locale;
 
     }
 
-    public Note(String note,long noteDate) {
+    public Note(String title,String note,long noteDate) {
+        this.noteTitle = title;
         this.noteText = note;
         this.noteDate = noteDate;
     }
@@ -43,6 +46,15 @@ import java.util.Locale;
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getNoteTitle() {
+        return noteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        this.noteTitle = noteTitle;
+    }
+
 
     public String getNoteText() {
         return noteText;

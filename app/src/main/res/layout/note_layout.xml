@@ -1,54 +1,3 @@
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="horizontal">
-
-    <TextView
-        android:id="@+id/lettertext"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        android:layout_marginBottom="3dp"
-        android:text="D"
-        android:textSize="18sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/note_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_marginBottom="3dp"
-            android:maxLines="3"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/note_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="3dp"
-            android:textSize="12sp"
-            android:layout_marginLeft="12dp" />
-&lt;!&ndash;
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="3dp" />&ndash;&gt;
-    </LinearLayout>
-
-
-</LinearLayout>-->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:id="@+id/listItemLinearLayout"
@@ -64,34 +13,48 @@ xmlns:tools="http://schemas.android.com/tools">
     android:layout_marginLeft="5dp"
     android:background="@drawable/rounded_texticon"
     android:layout_width="45dp"
+    android:textStyle="bold"
     android:text="A"
     android:textAllCaps="true"
     android:layout_height="45dp"/>
 
 
-<RelativeLayout
+<LinearLayout
     android:layout_marginLeft="16dp"
-    android:layout_weight="5"
+    android:layout_weight="4"
     android:layout_width="0dp"
     android:gravity="center"
+    android:orientation="vertical"
     android:layout_height="?android:attr/listPreferredItemHeight">
 
     <TextView
-        android:layout_alignParentTop="true"
+        tools:ignore="MissingPrefix"
+        android:id="@+id/note_title"
+        android:lines="1"
+        android:gravity="start|bottom"
+        android:textColor="@android:color/black"
+        android:ellipsize="end"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
         tools:ignore="MissingPrefix"
         android:id="@+id/note_text"
         android:lines="1"
         android:gravity="start|bottom"
         android:textColor="@android:color/black"
         android:ellipsize="end"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:text="Clean your room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <TextView
-        android:layout_below="@id/note_text"
         android:id="@+id/note_date"
         android:text="27 Sept 2015, 22:30"
         android:textColor="?attr/colorAccent"
@@ -99,7 +62,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:gravity="start|center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-</RelativeLayout>
+</LinearLayout>
 
 
 </LinearLayout>

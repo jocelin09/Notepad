@@ -37,4 +37,5 @@ public interface NoteDao {
 
     @Query("Select count(*) from notes")
     int getRows();
+
 }
