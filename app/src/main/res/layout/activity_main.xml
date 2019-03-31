@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/backgroundcolor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="example.jocelinthomas.noteapp.MainActivity">
 
@@ -27,96 +28,96 @@
     <include
         layout="@layout/content_main"/>
 
-  <!--  <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <!--  <android.support.design.widget.FloatingActionButton
+          android:id="@+id/fab"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom|end"
+          android:layout_margin="@dimen/fab_margin"
+          app:srcCompat="@drawable/ic_action_add" />-->
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_action_add" />-->
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+        android:layout_height="wrap_content">
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        fab:menu_fab_size="normal"
-        fab:menu_showShadow="true"
-        fab:menu_shadowColor="#66000000"
-        fab:menu_shadowRadius="4dp"
-        fab:menu_shadowXOffset="1dp"
-        fab:menu_shadowYOffset="3dp"
-        fab:menu_colorNormal="#DA4336"
-        fab:menu_colorPressed="#E75043"
-        fab:menu_colorRipple="#99FFFFFF"
-        fab:menu_animationDelayPerItem="50"
-        fab:menu_icon="@drawable/fab_add"
-        fab:menu_buttonSpacing="0dp"
-        fab:menu_labels_margin="0dp"
-        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-        fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-        fab:menu_labels_paddingTop="4dp"
-        fab:menu_labels_paddingRight="8dp"
-        fab:menu_labels_paddingBottom="4dp"
-        fab:menu_labels_paddingLeft="8dp"
-        fab:menu_labels_padding="8dp"
-        fab:menu_labels_textColor="#FFFFFF"
-        fab:menu_labels_textSize="14sp"
-        fab:menu_labels_cornerRadius="3dp"
-        fab:menu_labels_colorNormal="#333333"
-        fab:menu_labels_colorPressed="#444444"
-        fab:menu_labels_colorRipple="#66FFFFFF"
-        fab:menu_labels_showShadow="true"
-        fab:menu_labels_singleLine="false"
-        fab:menu_labels_ellipsize="none"
-        fab:menu_labels_maxLines="-1"
-        fab:menu_labels_position="left"
-        fab:menu_openDirection="up"
-        fab:menu_backgroundColor="@android:color/transparent"
-        fab:menu_fab_label="your_label_here">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_addnote"
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_edit"
-            fab:fab_size="mini"
-            fab:fab_label="Add note" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            fab:menu_fab_size="normal"
+            fab:menu_showShadow="true"
+            fab:menu_shadowColor="#66000000"
+            fab:menu_shadowRadius="4dp"
+            fab:menu_shadowXOffset="1dp"
+            fab:menu_shadowYOffset="3dp"
+            fab:menu_colorNormal="#EAC554"
+            fab:menu_colorPressed="#EAC554"
+            fab:menu_colorRipple="#99FFFFFF"
+            fab:menu_animationDelayPerItem="50"
+            fab:menu_icon="@drawable/fab_add"
+            fab:menu_buttonSpacing="0dp"
+            fab:menu_labels_margin="0dp"
+            fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            fab:menu_labels_paddingTop="4dp"
+            fab:menu_labels_paddingRight="8dp"
+            fab:menu_labels_paddingBottom="4dp"
+            fab:menu_labels_paddingLeft="8dp"
+            fab:menu_labels_padding="8dp"
+            fab:menu_labels_textColor="#FFFFFF"
+            fab:menu_labels_textSize="14sp"
+            fab:menu_labels_cornerRadius="3dp"
+            fab:menu_labels_colorNormal="#333333"
+            fab:menu_labels_colorPressed="#444444"
+            fab:menu_labels_colorRipple="#66FFFFFF"
+            fab:menu_labels_showShadow="true"
+            fab:menu_labels_singleLine="false"
+            fab:menu_labels_ellipsize="none"
+            fab:menu_labels_maxLines="-1"
+            fab:menu_labels_position="left"
+            fab:menu_openDirection="up"
+            fab:menu_backgroundColor="@android:color/transparent"
+            fab:menu_fab_label="your_label_here">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_mic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_mic"
-            fab:fab_size="mini"
-            fab:fab_label="Speak" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_addnotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_edit"
+                fab:fab_size="mini"
+                fab:fab_label="Add note" />
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_camera"
-            fab:fab_size="mini"
-            fab:fab_label="Camera" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_mic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_mic"
+                fab:fab_size="mini"
+                fab:fab_label="Speak" />
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_brush"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_brush"
-            fab:fab_size="mini"
-            fab:fab_label="Painting" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_camera"
+                fab:fab_size="mini"
+                fab:fab_label="Camera" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_brush"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_brush"
+                fab:fab_size="mini"
+                fab:fab_label="Painting" />
 
 
-    </com.github.clans.fab.FloatingActionMenu>
+        </com.github.clans.fab.FloatingActionMenu>
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

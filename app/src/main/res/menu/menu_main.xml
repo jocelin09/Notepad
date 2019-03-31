@@ -1,16 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="example.jocelinthomas.noteapp.MainActivity">
-<!--
-    <item
-        android:id="@+id/action_checked_count"
-        app:showAsAction="always"
-        android:title="0" />
-    <item
-        android:id="@+id/action_delete_notes"
-        android:icon="@drawable/ic_delete"
-        android:title="Delete"
-        app:showAsAction="always" />-->
 
+<item
+    android:id="@+id/menu_settings"
+    android:title="Settings"
+    app:showAsAction="never"></item>
+
+    <item
+        android:id="@+id/menu_shareapp"
+        android:title="Share"
+        app:showAsAction="never"
+        ></item>
 </menu>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -63,6 +64,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
                 public void onClick(View v) {
                    // noteEventListener
                     noteEventListener.onNoteClick(note);
+                    //Toast.makeText(context, "position" +position, Toast.LENGTH_SHORT).show();
+
                     }
             });
 
@@ -103,7 +106,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
             super(v);
 
             ButterKnife.bind(this,v);
-
+            context = v.getContext();
         }
     }
 

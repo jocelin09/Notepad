@@ -13,6 +13,7 @@ import android.speech.SpeechRecognizer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -43,8 +44,9 @@ public class SpeechToText extends AppCompatActivity {
     @BindView(R.id.mic_button)
     ImageButton mic_button;
 
-    SpeechRecognizer mSpeechRecognizer;
-    Intent mSpeechRecognizerIntent;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private final int REQ_CODE_SPEECH_INPUT = 100;
 
     private NoteDao dao;
@@ -56,8 +58,10 @@ public class SpeechToText extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_to_text);
+        
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -71,88 +75,13 @@ public class SpeechToText extends AppCompatActivity {
 
         } else edit_title.setFocusable(true);
 
-
-        //checkPermission();
-       // getActionBar().hide();
-
-        /*mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-
-        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
-                Locale.getDefault());
-        mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle params) {
-
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-
-            }
-
-            @Override
-            public void onRmsChanged(float rmsdB) {
-
-            }
-
-            @Override
-            public void onBufferReceived(byte[] buffer) {
-
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-
-            }
-
-            @Override
-            public void onError(int error) {
-
-            }
-
-            @Override
-            public void onResults(Bundle results) {
-                //getting all the matches
-                ArrayList<String> matches = results
-                        .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
-                //displaying the first match
-                if (matches != null)
-                    txtnote2.setText(matches.get(0));
-            }
-
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-
-            }
-
-            @Override
-            public void onEvent(int eventType, Bundle params) {
-
-            }
-        });*/
-
-    }
-
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + getPackageName()));
-                startActivity(intent);
-                finish();
-            }
-        }
     }
 
     //back button
     @Override
     public boolean onSupportNavigateUp() {
         saveNote();
-        // startActivity(new Intent(NotesActivity.this,MainActivity.class));
+
         return true;
     }
 
@@ -185,33 +114,15 @@ public class SpeechToText extends AppCompatActivity {
             }
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
             finish(); //return to main activity
-            startActivity(new Intent(this,MainActivity.class));
 
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+           // intent.putExtra("ActivityName","Speech");
+            startActivity(intent);
         }
     }
 
     @OnClick(R.id.mic_button)
     public void onMicButtonClick(View view){
-      /*  Toast.makeText(this, "Speak", Toast.LENGTH_SHORT).show();
-        mic_button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        mSpeechRecognizer.stopListening();
-                        txtnote2.setHint("You will see input here");
-                        break;
-
-                    case MotionEvent.ACTION_DOWN:
-                        mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
-                        txtnote2.setText("");
-                        txtnote2.setHint("Listening...");
-                        break;
-                }
-                return false;
-            }
-        });*/
-      
       promptSpeech();
     }
 
@@ -271,7 +182,10 @@ public class SpeechToText extends AppCompatActivity {
         }
 
         if (id==R.id.share){
-            if (text == null || text.length() == 0){
+            title = edit_title.getText().toString();
+            text = txtnote2.getText().toString();
+
+            if (text.isEmpty() || title.isEmpty()){
                 Toast.makeText(this, "Can't send empty message", Toast.LENGTH_SHORT).show();
             }
             else {
@@ -290,7 +204,7 @@ public class SpeechToText extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //  saveNote();
+          saveNote();
     }
 
 }
