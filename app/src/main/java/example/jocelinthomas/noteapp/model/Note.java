@@ -32,12 +32,15 @@ import java.util.Locale;
 
     }
 
-    public Note(String title,String note,long noteDate) {
+    public Note(String title, String note, long noteDate) {
         this.noteTitle = title;
         this.noteText = note;
         this.noteDate = noteDate;
     }
-
+    public Note(String title, long noteDate) {
+        this.noteTitle = title;
+        this.noteDate = noteDate;
+    }
 
     public int getId() {
         return id;

@@ -2,11 +2,9 @@ package example.jocelinthomas.noteapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.StringPrepParseException;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +36,12 @@ import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
 import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
+import static example.jocelinthomas.noteapp.R.drawable.*;
 
 public class MainActivity extends AppCompatActivity implements NoteListener {
 
 
-    @BindView(R.id.menu)
+  /*  @BindView(R.id.menu)
     FloatingActionMenu menu;
 
     @BindView(R.id.menu_addnotes)
@@ -48,10 +50,10 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     @BindView(R.id.menu_mic)
     FloatingActionButton menu_mic;
 
-    /*@BindView(R.id.menu_camera)
-    FloatingActionButton menu_camera;
+    @BindView(R.id.menu_checkbox)
+    FloatingActionButton menu_checkbox;*/
 
-    @BindView(R.id.menu_brush)
+  /*  @BindView(R.id.menu_brush)
     FloatingActionButton menu_brush;*/
 
     @BindView(R.id.toolbar)
@@ -72,33 +74,24 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     ArrayList<Note> noteArrayList;
     private NoteDao dao;
     SharedPref sharedPref;
-   // String actName ="blank";
+    // String actName ="blank";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-      //  actName = intent.getStringExtra("ActivityName");
-        intent.getStringExtra("Themevalue");
-
         sharedPref = new SharedPref(this);
-        //if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-        if (sharedPref.loadNightMode() == true)
-        {
+        if (sharedPref.loadNightMode() == true) {
             setTheme(R.style.DarkTheme);
-             Toast.makeText(this, "Dark theme act", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             setTheme(R.style.AppTheme);
-            Toast.makeText(this, "Light theme act", Toast.LENGTH_SHORT).show();
         }
 
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
 
-       // System.out.println("actName" +actName);
+        // System.out.println("actName" +actName);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -109,9 +102,66 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 
         dao = NoteDB.getInstance(this).noteDao();
 
+        // in Activity Context
+        ImageView icon = new ImageView(this); // Create an icon
+        icon.setImageResource(R.drawable.ic_add_black_24dp);
+        final FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(icon)
+                .build();
 
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+
+        ImageView noteicon = new ImageView(this);
+        noteicon.setImageResource(R.drawable.ic_action_edit);
+       // noteicon.setBackgroundResource(R.color.colorAccent);
+        SubActionButton button1 = itemBuilder.setContentView(noteicon).build();
+
+        ImageView micicon = new ImageView(this);
+        micicon.setImageResource(R.drawable.ic_action_mic);
+        //micicon.setBackgroundResource(R.color.colorAccent);
+        SubActionButton button2 = itemBuilder.setContentView(micicon).build();
+
+
+        ImageView checkicon = new ImageView(this);
+        checkicon.setImageResource(R.drawable.ic_check_circle_black_24dp);
+        //checkicon.setBackgroundResource(R.color.colorAccent);
+        SubActionButton button3 = itemBuilder.setContentView(checkicon).build();
+
+        final FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(button1)
+                .addSubActionView(button2)
+                .addSubActionView(button3)
+                .attachTo(actionButton)
+                .enableAnimations()
+                .build();
+
+       button1.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               startActivity(new Intent(MainActivity.this, NotesActivity.class));
+               actionMenu.close(true);
+           }
+       });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SpeechToText.class));
+                actionMenu.close(true);
+            }
+        });
+
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CheckboxActivity.class));
+                actionMenu.close(true);
+            }
+        });
     }
-  @Override
+
+    @Override
     protected void onResume() {
         loadNotes();
 
@@ -122,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         this.noteArrayList = new ArrayList<>();
         List<Note> list = dao.getNote();// get All notes from DataBase
         this.noteArrayList.addAll(list);
-       // System.out.println("actname adapter" +actName);
+        // System.out.println("actname adapter" +actName);
         this.adapter = new NotesAdapter(this, this.noteArrayList);
 
         //set listener to adapter
@@ -133,47 +183,44 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     }
 
     private void showEmptyRow() {
-        if (noteArrayList.size() == 0)
-        {
+        if (noteArrayList.size() == 0) {
             linearlayout.setVisibility(View.VISIBLE);
             this.recyclerView.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             linearlayout.setVisibility(View.GONE);
             this.recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
-
-
-    @OnClick(R.id.menu_addnotes)
-    public void onNoteClick(View view)
-    {
-        startActivity(new Intent(MainActivity.this,NotesActivity.class));
+/*
+    @OnClick(R.id)
+    public void onNoteClick(View view) {
+        startActivity(new Intent(MainActivity.this, NotesActivity.class));
         menu.close(true);
     }
 
     @OnClick(R.id.menu_mic)
-    public void onMicClick(View view)
-    {
-        startActivity(new Intent(MainActivity.this,SpeechToText.class));
+    public void onMicClick(View view) {
+        startActivity(new Intent(MainActivity.this, SpeechToText.class));
         menu.close(true);
 
     }
 
-   /* @OnClick(R.id.menu_brush)
-    public void onBrushClick(View view)
-    {
-        startActivity(new Intent(MainActivity.this,CanvasActivity.class));
+    @OnClick(R.id.menu_checkbox)
+    public void onCheckClick(View view) {
+        startActivity(new Intent(MainActivity.this, CheckboxActivity.class));
+        menu.close(true);
+
     }*/
 
-   //*************************************ALERT CHECK THIS CODE***************************************//
+
+    //*************************************ALERT CHECK THIS CODE***************************************//
     @Override
     public void onNoteClick(Note note) {
 
-            Intent edit = new Intent(this, NotesActivity.class);
-            edit.putExtra(NOTE_EXTRA_Key, note.getId());
-            startActivity(edit);
+        Intent edit = new Intent(this, NotesActivity.class);
+        edit.putExtra(NOTE_EXTRA_Key, note.getId());
+        startActivity(edit);
 
 
     }
@@ -216,13 +263,12 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.menu_settings){
+        if (id == R.id.menu_settings) {
             //open fragment activity
-            startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             return true;
         }
-        if (id == R.id.menu_shareapp)
-        {
+        if (id == R.id.menu_shareapp) {
             try {
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
@@ -264,9 +310,8 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     }
 
     private void restartApp() {
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
-
 
 }

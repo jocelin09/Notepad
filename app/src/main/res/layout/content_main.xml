@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="top"
+    android:background="?attr/backgroundcolor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="example.jocelinthomas.noteapp.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -18,6 +19,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:scrollbars="vertical"
+        android:background="?attr/backgroundcolor"
         android:layout_alignParentTop="true">
 
     </android.support.v7.widget.RecyclerView>
@@ -45,6 +47,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/no_note"
+            android:textColor="?attr/textcolor"
             android:textSize="15dp" />
 
     </LinearLayout>-->

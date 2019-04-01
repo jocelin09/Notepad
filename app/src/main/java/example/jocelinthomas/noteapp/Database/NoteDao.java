@@ -26,7 +26,7 @@ public interface NoteDao {
     void updateNote(Note note);
 
 
-    @Query("Select * from notes") //list all notes from db
+    @Query("Select * from notes order by id desc") //list all notes from db
     List<Note> getNote();
 
     @Query("Select * from notes where id = :noteId") //get note by id

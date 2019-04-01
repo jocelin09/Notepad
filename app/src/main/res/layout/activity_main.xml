@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="?attr/backgroundcolor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="example.jocelinthomas.noteapp.MainActivity">
@@ -28,14 +27,7 @@
     <include
         layout="@layout/content_main"/>
 
-    <!--  <android.support.design.widget.FloatingActionButton
-          android:id="@+id/fab"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="bottom|end"
-          android:layout_margin="@dimen/fab_margin"
-          app:srcCompat="@drawable/ic_action_add" />-->
-    <RelativeLayout
+  <!--  <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -54,9 +46,9 @@
             fab:menu_shadowRadius="4dp"
             fab:menu_shadowXOffset="1dp"
             fab:menu_shadowYOffset="3dp"
-            fab:menu_colorNormal="#EAC554"
-            fab:menu_colorPressed="#EAC554"
-            fab:menu_colorRipple="#99FFFFFF"
+            fab:menu_colorNormal="@color/colorAccent"
+            fab:menu_colorPressed="@color/colorAccent"
+            fab:menu_colorRipple="@color/colorAccent"
             fab:menu_animationDelayPerItem="50"
             fab:menu_icon="@drawable/fab_add"
             fab:menu_buttonSpacing="0dp"
@@ -81,43 +73,38 @@
             fab:menu_labels_position="left"
             fab:menu_openDirection="up"
             fab:menu_backgroundColor="@android:color/transparent"
-            fab:menu_fab_label="your_label_here">
-
+>
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/menu_addnotes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_action_edit"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccent"
                 fab:fab_size="mini"
-                fab:fab_label="Add note" />
-
+/>
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/menu_mic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_action_mic"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccent"
                 fab:fab_size="mini"
-                fab:fab_label="Speak" />
-
+/>
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/menu_camera"
+                android:id="@+id/menu_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_camera"
+                android:src="@drawable/ic_check_circle_black_24dp"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccent"
                 fab:fab_size="mini"
-                fab:fab_label="Camera" />
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/menu_brush"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_brush"
-                fab:fab_size="mini"
-                fab:fab_label="Painting" />
+/>
 
 
         </com.github.clans.fab.FloatingActionMenu>
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>

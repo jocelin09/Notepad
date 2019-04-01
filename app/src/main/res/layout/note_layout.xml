@@ -1,70 +1,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:id="@+id/listItemLinearLayout"
-android:layout_marginBottom="1dp"
-android:orientation="horizontal"
-android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listItemLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
     android:background="?attr/cardbackground"
-xmlns:tools="http://schemas.android.com/tools">
-
-<TextView
-    android:id="@+id/text_icon"
-    android:gravity="center"
-    android:layout_gravity="center"
-    android:layout_marginLeft="5dp"
-    android:background="@drawable/rounded_texticon"
-    android:layout_width="45dp"
-    android:textStyle="bold"
-    android:textColor="?attr/textcolor"
-    android:text="A"
-    android:textAllCaps="true"
-    android:layout_height="45dp"/>
-
-
-<LinearLayout
-    android:layout_marginLeft="16dp"
-    android:layout_weight="4"
-    android:layout_width="0dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:layout_height="?android:attr/listPreferredItemHeight">
+    android:orientation="horizontal">
 
     <TextView
-        tools:ignore="MissingPrefix"
-        android:id="@+id/note_title"
-        android:lines="1"
-        android:gravity="start|bottom"
+        android:id="@+id/text_icon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/rounded_texticon"
+        android:gravity="center"
+        android:text="A"
+        android:textAllCaps="true"
         android:textColor="?attr/textcolor"
-        android:ellipsize="end"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:textStyle="bold" />
 
-    <TextView
-        tools:ignore="MissingPrefix"
-        android:id="@+id/note_text"
-        android:lines="1"
-        android:gravity="start|bottom"
-        android:textColor="?attr/textcolor"
-        android:ellipsize="end"
-        android:textSize="14sp"
-        android:text="Clean your room"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
 
-    <TextView
-        android:id="@+id/note_date"
-        android:text="27 Sept 2015, 22:30"
-        android:textColor="?attr/colorAccent"
-        android:textSize="12sp"
-        android:gravity="start|center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_marginLeft="16dp"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start|bottom"
+            android:lines="1"
+            android:text="Title"
+            android:textColor="?attr/textcolor"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="MissingPrefix" />
+
+        <!--  <TextView
+              tools:ignore="MissingPrefix"
+              android:id="@+id/note_text"
+              android:lines="1"
+              android:gravity="start|bottom"
+              android:textColor="?attr/textcolor"
+              android:ellipsize="end"
+              android:textSize="14sp"
+              android:text="Clean your room"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              />-->
+
+        <TextView
+            android:id="@+id/note_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center"
+            android:text="27 Sept 2015, 22:30"
+            android:textColor="?attr/colorAccent"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 
 </LinearLayout>

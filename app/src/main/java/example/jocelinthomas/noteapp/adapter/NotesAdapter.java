@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.jocelinthomas.noteapp.NotesActivity;
 import example.jocelinthomas.noteapp.R;
+import example.jocelinthomas.noteapp.SpeechToText;
 import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
@@ -53,7 +54,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
         final Note note = getNote(position);
         if (note !=null){
             holder.note_title.setText(note.getNoteTitle());
-            holder.note_text.setText(note.getNoteText());
+          //  holder.note_text.setText(note.getNoteText());
             holder.note_date.setText(note.dateFromLong(note.getNoteDate()));
             Random mRandom = new Random();
             final int color = Color.argb(255, mRandom.nextInt(256), mRandom.nextInt(256), mRandom.nextInt(256));
@@ -62,11 +63,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // noteEventListener
+                    // noteEventListener
                     noteEventListener.onNoteClick(note);
                     //Toast.makeText(context, "position" +position, Toast.LENGTH_SHORT).show();
 
-                    }
+                }
             });
 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -96,8 +97,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
         @BindView(R.id.note_title)
         TextView note_title;
 
-        @BindView(R.id.note_text)
-        TextView note_text;
+     /*   @BindView(R.id.note_text)
+        TextView note_text;*/
 
         @BindView(R.id.note_date)
         TextView note_date;
@@ -113,6 +114,5 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     public void setListener(NoteListener listener) {
         this.noteEventListener = listener;
     }
-
 
 }

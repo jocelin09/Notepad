@@ -1,22 +1,13 @@
 package example.jocelinthomas.noteapp;
 
-import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.Settings;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,13 +43,23 @@ public class SpeechToText extends AppCompatActivity {
     private NoteDao dao;
     private Note temp;
     public static final String NOTE_EXTRA_Key = "note_id";
-    String title,text;
+    String title, text;
+    SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        sharedPref = new SharedPref(this);
+        if (sharedPref.loadNightMode() == true) {
+            setTheme(R.style.DarkTheme);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
+
         setContentView(R.layout.activity_speech_to_text);
-        
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -89,24 +90,17 @@ public class SpeechToText extends AppCompatActivity {
         title = edit_title.getText().toString();
         text = txtnote2.getText().toString();
 
-        if (title.isEmpty() && text.isEmpty())
-        {
+        if (title.isEmpty() && text.isEmpty()) {
             Toast.makeText(this, "Please enter a note", Toast.LENGTH_SHORT).show();
-        }
-        else if (title.isEmpty())
-        {
+        } else if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
-        }
-        else if (!text.isEmpty() || !title.isEmpty())
-        {
+        } else if (!text.isEmpty() || !title.isEmpty()) {
             long date = new Date().getTime(); // get current time;
 
-            if (temp == null){
-                temp = new Note(title,text,date);
+            if (temp == null) {
+                temp = new Note(title, text, date);
                 dao.insertNote(temp); //inserts note record to db;
-            }
-            else
-            {
+            } else {
                 temp.setNoteTitle(title);
                 temp.setNoteText(text);
                 temp.setNoteDate(date);
@@ -115,15 +109,15 @@ public class SpeechToText extends AppCompatActivity {
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
             finish(); //return to main activity
 
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-           // intent.putExtra("ActivityName","Speech");
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            // intent.putExtra("ActivityName","Speech");
             startActivity(intent);
         }
     }
 
     @OnClick(R.id.mic_button)
-    public void onMicButtonClick(View view){
-      promptSpeech();
+    public void onMicButtonClick(View view) {
+        promptSpeech();
     }
 
     private void promptSpeech() {
@@ -181,19 +175,18 @@ public class SpeechToText extends AppCompatActivity {
             return true;
         }
 
-        if (id==R.id.share){
+        if (id == R.id.share) {
             title = edit_title.getText().toString();
             text = txtnote2.getText().toString();
 
-            if (text.isEmpty() || title.isEmpty()){
+            if (text.isEmpty() || title.isEmpty()) {
                 Toast.makeText(this, "Can't send empty message", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            } else {
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 String shareBody = text;
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         }
@@ -204,7 +197,7 @@ public class SpeechToText extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-          saveNote();
+        saveNote();
     }
 
 }

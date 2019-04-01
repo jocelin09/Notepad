@@ -3,6 +3,7 @@ package example.jocelinthomas.noteapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ public class CanvasActivity extends AppCompatActivity {
 
     @BindView(R.id.signature_canvas)
     CanvasView canvasView;
+
     @BindView(R.id.painttitle)
     EditText painttitle;
 
@@ -29,15 +31,17 @@ public class CanvasActivity extends AppCompatActivity {
     public static final String NOTE_EXTRA_Key = "note_id";
     String title,text="dummy data";
 
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
-      //  canvasView = (CanvasView) findViewById(R.id.signature_canvas);
+
         ButterKnife.bind(this);
-       // setSupportActionBar(toolbar);
+
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -51,13 +55,12 @@ public class CanvasActivity extends AppCompatActivity {
 
         } else painttitle.setFocusable(true);
 
-
     }
     //back button
     @Override
     public boolean onSupportNavigateUp() {
         saveNote();
-        // startActivity(new Intent(NotesActivity.this,HomeActivity.class));
+        startActivity(new Intent(CanvasActivity.this,MainActivity.class));
         return true;
     }
 
