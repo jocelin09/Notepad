@@ -9,10 +9,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +27,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
@@ -35,21 +34,19 @@ import example.jocelinthomas.noteapp.adapter.NotesAdapter;
 import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
+import static example.jocelinthomas.noteapp.CheckboxActivity.CHECK_EXTRA_Key;
 import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
-import static example.jocelinthomas.noteapp.R.drawable.*;
+import static example.jocelinthomas.noteapp.SpeechToText.SPEECH_EXTRA_Key;
 
 public class MainActivity extends AppCompatActivity implements NoteListener {
 
 
   /*  @BindView(R.id.menu)
     FloatingActionMenu menu;
-
     @BindView(R.id.menu_addnotes)
     FloatingActionButton menu_addnotes;
-
     @BindView(R.id.menu_mic)
     FloatingActionButton menu_mic;
-
     @BindView(R.id.menu_checkbox)
     FloatingActionButton menu_checkbox;*/
 
@@ -74,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     ArrayList<Note> noteArrayList;
     private NoteDao dao;
     SharedPref sharedPref;
-    // String actName ="blank";
+     String actName ="blank";
 
+     String[] sort_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         sharedPref = new SharedPref(this);
         if (sharedPref.loadNightMode() == true) {
@@ -86,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         } else {
             setTheme(R.style.AppTheme);
         }
-
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 
         ImageView noteicon = new ImageView(this);
         noteicon.setImageResource(R.drawable.ic_action_edit);
-       // noteicon.setBackgroundResource(R.color.colorAccent);
+        // noteicon.setBackgroundResource(R.color.colorAccent);
         SubActionButton button1 = itemBuilder.setContentView(noteicon).build();
 
         ImageView micicon = new ImageView(this);
@@ -135,13 +132,13 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
                 .enableAnimations()
                 .build();
 
-       button1.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               startActivity(new Intent(MainActivity.this, NotesActivity.class));
-               actionMenu.close(true);
-           }
-       });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NotesActivity.class));
+                actionMenu.close(true);
+            }
+        });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +179,34 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 
     }
 
+    private void loadNotes1() {
+        this.noteArrayList = new ArrayList<>();
+        List<Note> list = dao.getNote1();// get All notes from DataBase
+        this.noteArrayList.addAll(list);
+        // System.out.println("actname adapter" +actName);
+        this.adapter = new NotesAdapter(this, this.noteArrayList);
+
+        //set listener to adapter
+        this.adapter.setListener(this);
+        this.recyclerView.setAdapter(adapter);
+        showEmptyRow();
+
+    }
+
+    private void loadNotes2() {
+        this.noteArrayList = new ArrayList<>();
+        List<Note> list = dao.getNote2();// get All notes from DataBase
+        this.noteArrayList.addAll(list);
+        // System.out.println("actname adapter" +actName);
+        this.adapter = new NotesAdapter(this, this.noteArrayList);
+
+        //set listener to adapter
+        this.adapter.setListener(this);
+        this.recyclerView.setAdapter(adapter);
+        showEmptyRow();
+
+    }
+
     private void showEmptyRow() {
         if (noteArrayList.size() == 0) {
             linearlayout.setVisibility(View.VISIBLE);
@@ -198,19 +223,16 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         startActivity(new Intent(MainActivity.this, NotesActivity.class));
         menu.close(true);
     }
-
     @OnClick(R.id.menu_mic)
     public void onMicClick(View view) {
         startActivity(new Intent(MainActivity.this, SpeechToText.class));
         menu.close(true);
 
     }
-
     @OnClick(R.id.menu_checkbox)
     public void onCheckClick(View view) {
         startActivity(new Intent(MainActivity.this, CheckboxActivity.class));
         menu.close(true);
-
     }*/
 
 
@@ -218,9 +240,28 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     @Override
     public void onNoteClick(Note note) {
 
-        Intent edit = new Intent(this, NotesActivity.class);
-        edit.putExtra(NOTE_EXTRA_Key, note.getId());
-        startActivity(edit);
+        String namesct = note.getActivityName();
+        System.out.println("nameact::" +namesct);
+
+        if (namesct.equals("Notes"))
+        {
+            Intent edit = new Intent(this, NotesActivity.class);
+            edit.putExtra(NOTE_EXTRA_Key, note.getId());
+            startActivity(edit);
+        }
+        else if (namesct.equals("Speech"))
+        {
+            Intent edit = new Intent(this, SpeechToText.class);
+            edit.putExtra(SPEECH_EXTRA_Key, note.getId());
+            startActivity(edit);
+        }
+        else if (namesct.equals("Checkbox"))
+        {
+            Intent edit = new Intent(this, CheckboxActivity.class);
+            edit.putExtra(CHECK_EXTRA_Key, note.getId());
+            startActivity(edit);
+        }
+
 
 
     }
@@ -284,34 +325,60 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
             }
             return true;
         }
-        /*{
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Change theme?").setPositiveButton("Light Theme", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    restartApp();
-                }
-            }).setNegativeButton("Dark Theme", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    restartApp();
-                }
-            }).show();
 
-        }*/
+        if (id == R.id.menu_sort)
+        {
+            sort_list = new String[]{"Alphabetically","Date modified","Date Created"};
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setTitle(R.string.sort).setIcon(R.drawable.ic_sort_black_24dp);
+            //-1 means no items are checked when dialog appears first
+            alertDialogBuilder.setSingleChoiceItems(sort_list, -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    switch (i)
+                    {
+                        case 0:
+                            loadNotes2();
+                            break;
 
+                        case  1:
+                            loadNotes();
+                            break;
+
+                        case 2:
+                            loadNotes1();
+                            break;
+                    }
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
+      //  super.onBackPressed();
 
-    private void restartApp() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+      //  finish();
     }
 
 }

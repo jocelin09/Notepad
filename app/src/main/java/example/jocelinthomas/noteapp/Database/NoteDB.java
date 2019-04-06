@@ -14,10 +14,9 @@ import example.jocelinthomas.noteapp.model.Note;
  * Created by jocelinthomas on 16/03/19.
  */
 
-@Database(entities = Note.class,version = 3,exportSchema = false)
+@Database(entities = Note.class,version = 4,exportSchema = false)
 
 public abstract class NoteDB extends RoomDatabase{
-
     public abstract NoteDao noteDao();
     public static final String Database_Name = "notesdb";
     private static NoteDB instance;
@@ -25,7 +24,7 @@ public abstract class NoteDB extends RoomDatabase{
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE notes "
-                    +"ADD COLUMN title TEXT");
+                    +"ADD COLUMN activityName TEXT");
         }
     };
     public static NoteDB getInstance(Context context){

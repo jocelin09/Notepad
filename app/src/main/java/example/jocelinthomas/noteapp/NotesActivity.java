@@ -34,10 +34,9 @@ public class NotesActivity extends AppCompatActivity {
     private NoteDao dao;
     private Note temp;
     public static final String NOTE_EXTRA_Key = "note_id";
-    String title, text;
-
+    String title,text;
+    String activityName = "Notes";
     SharedPref sharedPref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +47,7 @@ public class NotesActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.AppTheme);
         }
+
 
         setContentView(R.layout.activity_notes);
 
@@ -66,6 +66,8 @@ public class NotesActivity extends AppCompatActivity {
             notetitle.setText(temp.getNoteTitle());
             txtnote.setText(temp.getNoteText());
 
+            txtnote.setSelection(txtnote.getText().length());
+            txtnote.requestFocus();
         } else notetitle.setFocusable(true);
 
 
@@ -75,36 +77,41 @@ public class NotesActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         saveNote();
-        startActivity(new Intent(NotesActivity.this, MainActivity.class));
+        startActivity(new Intent(NotesActivity.this,MainActivity.class));
         return true;
     }
 
     //save notes
     public void saveNote() {
-        title = notetitle.getText().toString();
-        text = txtnote.getText().toString();
+         title = notetitle.getText().toString().trim();
+         text = txtnote.getText().toString().trim();
 
-        if (title.isEmpty() && text.isEmpty()) {
-            Toast.makeText(this, "Please enter a note", Toast.LENGTH_SHORT).show();
-        } else if (title.isEmpty()) {
+        System.out.println("Tile :" +title+"Text:" +text + "activityName" +activityName);
+         if (title.isEmpty() && !text.isEmpty())
+        {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
-        } else if (!text.isEmpty() || !title.isEmpty()) {
+        }
+        else if (!title.isEmpty())
+        {
             long date = new Date().getTime(); // get current time;
 
-            if (temp == null) {
-                temp = new Note(title, text, date);
+            if (temp == null){
+                temp = new Note(title,text,date,activityName);
                 dao.insertNote(temp); //inserts note record to db;
-            } else {
+            }
+            else
+            {
                 temp.setNoteTitle(title);
                 temp.setNoteText(text);
                 temp.setNoteDate(date);
+                temp.setActivityName(activityName);
                 dao.updateNote(temp);
             }
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
-            finish(); //return to main activity
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("ActivityName", "Text");
+
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+           // intent.putExtra("ActivityName","Text");
             startActivity(intent);
         }
     }
@@ -131,24 +138,31 @@ public class NotesActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.share) {
-            title = notetitle.getText().toString();
-            text = txtnote.getText().toString();
-            if (title.isEmpty() || text.isEmpty()) {
+        if (id== R.id.share){
+            title = notetitle.getText().toString().trim();
+            text = txtnote.getText().toString().trim();
+            if (title.isEmpty() || text.isEmpty()){
                 Toast.makeText(this, "Can't send empty message", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = text;
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+                String shareBody = title+": "+text;
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
             return true;
         }
-        if (id == R.id.discard) {
-            startActivity(new Intent(NotesActivity.this, MainActivity.class));
-            finish();
+        if (id== R.id.discard){
+           startActivity(new Intent(NotesActivity.this,MainActivity.class));
+           finish();
+           return true;
+        }
+
+        if (id == R.id.shareaspdf)
+        {
+
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -157,8 +171,12 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
         saveNote();
-        //finish();
+        finish();
     }
+
+
+
+
 }

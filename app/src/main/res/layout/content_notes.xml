@@ -36,6 +36,7 @@
         android:inputType="textCapSentences|textMultiLine"
         android:paddingEnd="12dp"
         android:paddingStart="12dp"
+        android:isScrollContainer="true"
         android:paddingTop="4dp"
         android:textColor="?attr/textcolor"
         tools:text="@tools:sample/lorem/random" />

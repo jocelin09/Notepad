@@ -28,18 +28,23 @@ import java.util.Locale;
     @ColumnInfo(name = "noteDate")
     private long noteDate;
 
+    @ColumnInfo(name = "activityName")
+    private String activityName;
+
     public Note() {
 
     }
 
-    public Note(String title, String note, long noteDate) {
+    public Note(String title, String note, long noteDate,String activityName) {
         this.noteTitle = title;
         this.noteText = note;
         this.noteDate = noteDate;
+        this.activityName = activityName;
     }
-    public Note(String title, long noteDate) {
+    public Note(String title, long noteDate,String activityName) {
         this.noteTitle = title;
         this.noteDate = noteDate;
+        this.activityName = activityName;
     }
 
     public int getId() {
@@ -78,6 +83,14 @@ import java.util.Locale;
     public static String dateFromLong(long time) {
         DateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy 'at' hh:mm aaa", Locale.US);
         return format.format(new Date(time));
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
     }
 
     @Override

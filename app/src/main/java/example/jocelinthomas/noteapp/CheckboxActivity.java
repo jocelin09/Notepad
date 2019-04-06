@@ -28,8 +28,8 @@ public class CheckboxActivity extends AppCompatActivity {
 
     private NoteDao dao;
     private Note temp;
-    public static final String NOTE_EXTRA_Key = "note_id";
-    String title;
+    public static final String CHECK_EXTRA_Key = "check_id";
+    String title,activityName = "Checkbox";
     SharedPref sharedPref;
 
     @Override
@@ -56,10 +56,10 @@ public class CheckboxActivity extends AppCompatActivity {
         dao = NoteDB.getInstance(this).noteDao();
 
         if (getIntent().getExtras() != null) {
-            int id = getIntent().getExtras().getInt(NOTE_EXTRA_Key, 0);
+            int id = getIntent().getExtras().getInt(CHECK_EXTRA_Key, 0);
             temp = dao.getNoteById(id);
             checktitle.setText(temp.getNoteTitle());
-            //txtnote.setText(temp.getNoteText());
+            checktitle.setSelection(checktitle.getText().length());
 
         } else checktitle.setFocusable(true);
 
@@ -75,8 +75,8 @@ public class CheckboxActivity extends AppCompatActivity {
     }
 
     private void saveNote() {
-        title = checktitle.getText().toString();
-        //text = txtnote.getText().toString();
+        title = checktitle.getText().toString().trim();
+        //text = txtnote.getText().toString().trim();
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a note", Toast.LENGTH_SHORT).show();
@@ -86,16 +86,17 @@ public class CheckboxActivity extends AppCompatActivity {
             long date = new Date().getTime(); // get current time;
 
             if (temp == null) {
-                temp = new Note(title, date);
+                temp = new Note(title, date,activityName);
                 dao.insertNote(temp); //inserts note record to db;
             } else {
                 temp.setNoteTitle(title);
                 // temp.setNoteText(text);
                 temp.setNoteDate(date);
+                temp.setActivityName(activityName);
                 dao.updateNote(temp);
             }
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
-            finish(); //return to main activity
+           // finish(); //return to main activity
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("ActivityName", "Text");
@@ -125,15 +126,15 @@ public class CheckboxActivity extends AppCompatActivity {
         }
 
         if (id == R.id.share) {
-            title = checktitle.getText().toString();
-            //text = txtnote.getText().toString();
+            title = checktitle.getText().toString().trim();
+            //text = txtnote.getText().toString().trim();
             if (title.isEmpty()) {
                 Toast.makeText(this, "Can't send empty message", Toast.LENGTH_SHORT).show();
             } else {
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 String shareBody = "";
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }

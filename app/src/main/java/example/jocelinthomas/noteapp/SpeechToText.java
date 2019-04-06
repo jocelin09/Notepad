@@ -42,10 +42,10 @@ public class SpeechToText extends AppCompatActivity {
 
     private NoteDao dao;
     private Note temp;
-    public static final String NOTE_EXTRA_Key = "note_id";
+    public static final String SPEECH_EXTRA_Key = "speech_id";
     String title, text;
     SharedPref sharedPref;
-
+    String activityName = "Speech";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,11 +69,12 @@ public class SpeechToText extends AppCompatActivity {
         dao = NoteDB.getInstance(this).noteDao();
 
         if (getIntent().getExtras() != null) {
-            int id = getIntent().getExtras().getInt(NOTE_EXTRA_Key, 0);
+            int id = getIntent().getExtras().getInt(SPEECH_EXTRA_Key, 0);
             temp = dao.getNoteById(id);
             edit_title.setText(temp.getNoteTitle());
+            edit_title.setSelection(edit_title.getText().length());
             txtnote2.setText(temp.getNoteText());
-
+            txtnote2.setSelection(txtnote2.getText().length());
         } else edit_title.setFocusable(true);
 
     }
@@ -82,32 +83,32 @@ public class SpeechToText extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         saveNote();
-
+        startActivity(new Intent(SpeechToText.this, MainActivity.class));
         return true;
     }
 
     private void saveNote() {
-        title = edit_title.getText().toString();
-        text = txtnote2.getText().toString();
-
-        if (title.isEmpty() && text.isEmpty()) {
-            Toast.makeText(this, "Please enter a note", Toast.LENGTH_SHORT).show();
-        } else if (title.isEmpty()) {
+        title = edit_title.getText().toString().trim();
+        text = txtnote2.getText().toString().trim();
+        if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
-        } else if (!text.isEmpty() || !title.isEmpty()) {
+        }
+
+        else if (!text.isEmpty() || !title.isEmpty()) {
             long date = new Date().getTime(); // get current time;
 
             if (temp == null) {
-                temp = new Note(title, text, date);
+                temp = new Note(title, text, date,activityName);
                 dao.insertNote(temp); //inserts note record to db;
             } else {
                 temp.setNoteTitle(title);
                 temp.setNoteText(text);
                 temp.setNoteDate(date);
+                temp.setActivityName(activityName);
                 dao.updateNote(temp);
             }
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
-            finish(); //return to main activity
+           // finish(); //return to main activity
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             // intent.putExtra("ActivityName","Speech");
@@ -147,6 +148,9 @@ public class SpeechToText extends AppCompatActivity {
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txtnote2.setText(result.get(0));
+                    txtnote2.setSelection(txtnote2.getText().length());
+                    txtnote2.requestFocus();
+
                 }
                 break;
             }
@@ -176,16 +180,16 @@ public class SpeechToText extends AppCompatActivity {
         }
 
         if (id == R.id.share) {
-            title = edit_title.getText().toString();
-            text = txtnote2.getText().toString();
+            title = edit_title.getText().toString().trim();
+            text = txtnote2.getText().toString().trim();
 
             if (text.isEmpty() || title.isEmpty()) {
                 Toast.makeText(this, "Can't send empty message", Toast.LENGTH_SHORT).show();
             } else {
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = text;
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+                String shareBody = title+": "+text;
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }

@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="example.jocelinthomas.noteapp.MainActivity">
 
+
+    <item
+        android:id="@+id/menu_sort"
+        android:title="Sort"
+        app:showAsAction="never"></item>
 <item
     android:id="@+id/menu_settings"
     android:title="Settings"
@@ -11,7 +16,7 @@
 
     <item
         android:id="@+id/menu_shareapp"
-        android:title="Share"
+        android:title="Share App"
         app:showAsAction="never"
         ></item>
 </menu>

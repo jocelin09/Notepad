@@ -59,7 +59,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
             Random mRandom = new Random();
             final int color = Color.argb(255, mRandom.nextInt(256), mRandom.nextInt(256), mRandom.nextInt(256));
             ((GradientDrawable) holder.text_icon.getBackground()).setColor(color);
-            holder.text_icon.setText(note.getNoteTitle().substring(0,1));
+            holder.text_icon.setText(note.getNoteTitle().substring(0,1).trim());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

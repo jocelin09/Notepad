@@ -26,8 +26,15 @@ public interface NoteDao {
     void updateNote(Note note);
 
 
-    @Query("Select * from notes order by id desc") //list all notes from db
+
+    @Query("Select * from notes order by noteDate desc") //list all notes from db date modified
     List<Note> getNote();
+
+    @Query("Select * from notes order by id desc") //list all notes from db //date created
+    List<Note> getNote1();
+
+    @Query("Select * from notes order by noteTitle COLLATE NOCASE asc") //list all notes from db alphabetically
+    List<Note> getNote2();
 
     @Query("Select * from notes where id = :noteId") //get note by id
     Note getNoteById(int noteId);
@@ -37,5 +44,4 @@ public interface NoteDao {
 
     @Query("Select count(*) from notes")
     int getRows();
-
 }

@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_gravity="top"
     android:background="?attr/backgroundcolor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -24,33 +22,43 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/linearlayout"
+    <RelativeLayout
+        android:id="@+id/relativelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
+        android:layout_gravity="center">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/empty_view_bg_2"
-            app:civ_border_color="#FFF"
-            app:civ_border_width="1dp" />
-
-        <TextView
-            android:id="@+id/nonotes"
+        <LinearLayout
+            android:id="@+id/linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center"
-            android:text="@string/no_note"
-            android:textColor="?attr/textcolor"
-            android:textSize="15dp" />
+            >
 
-    </LinearLayout>-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/empty_view_bg_2"
+                app:civ_border_color="#FFF"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/nonotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_note"
+                android:textColor="?attr/textcolor"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
-</LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

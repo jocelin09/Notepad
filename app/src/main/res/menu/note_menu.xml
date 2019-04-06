@@ -11,16 +11,27 @@
         tools:ignore="MenuTitle" />
 
     <item
+        android:id="@+id/reminder"
+        android:icon="@drawable/ic_access_alarm_black_24dp"
+        android:title="Reminder"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/shareaspdf"
+        android:icon="@drawable/ic_done_black_24dp"
+        android:title="Export as PDF"
+        app:showAsAction="never"
+        tools:ignore="MenuTitle" />
+
+    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share_black_24dp"
         android:title="Share"
-        app:showAsAction="never"
-/>
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/discard"
         android:icon="@drawable/ic_cancel_black_24dp"
-        app:showAsAction="never"
-        android:title="Discard"/>
-
+        android:title="Discard"
+        app:showAsAction="never" />
 
 </menu>
