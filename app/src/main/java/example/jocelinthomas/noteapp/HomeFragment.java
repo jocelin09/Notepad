@@ -210,19 +210,19 @@ public class HomeFragment extends Fragment implements NoteListener{
     @OnClick(R.id.menu_addnotes)
     public void onPenClick(View view) {
         //startActivity(new Intent(getActivity(), NotesActivity.class));
-        MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+        MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
         fab.close(true);
     }
 
     @OnClick(R.id.menu_mic)
     public void onMicClick(View view) {
-         MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).commit();
+         MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).commit();
         fab.close(true);
     }
 
     @OnClick(R.id.menu_checkbox)
     public void onCheckboxClick(View view) {
-        //  MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+        //  MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
         fab.close(true);
     }
 
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment implements NoteListener{
             notesFragment.setArguments(bundle);
 
             System.out.println("note.getId()" +note.getId());
-            MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,notesFragment,null).addToBackStack(null).commit();
+            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,notesFragment,null).addToBackStack(null).commit();
 
 
         }
@@ -256,12 +256,12 @@ public class HomeFragment extends Fragment implements NoteListener{
             speechFragment.setArguments(bundle_speech);
 
             System.out.println("note.getId()" +note.getId());
-              MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,speechFragment,null).addToBackStack(null).commit();
+              MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,speechFragment,null).addToBackStack(null).commit();
 
         }
         else if (namesct.equals("Checkbox"))
         {
-            //   MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new CheckboxFragment(),null).addToBackStack(null).commit();
+            //   MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new CheckboxFragment(),null).addToBackStack(null).commit();
 
         }
     }
@@ -387,7 +387,7 @@ public class HomeFragment extends Fragment implements NoteListener{
         switch (item.getItemId()){
 
             case R.id.menu_settings:
-                // MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SettingsFragment(),null).commit();
+                // MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SettingsFragment(),null).commit();
 
                 getActivity().startActivity(new Intent(getActivity(),SettingsActivity.class));
                 getActivity().finish();

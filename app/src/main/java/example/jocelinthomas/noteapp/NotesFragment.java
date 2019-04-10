@@ -129,7 +129,7 @@ public class NotesFragment extends Fragment {
             }
             Toast.makeText(getActivity(), "Saved!!", Toast.LENGTH_SHORT).show();
 
-            getActivity().startActivity(new Intent(getActivity(),MainActivity2.class));
+            getActivity().startActivity(new Intent(getActivity(),MainActivity.class));
             getActivity().finish();
         }
     }
@@ -169,7 +169,7 @@ public class NotesFragment extends Fragment {
                 return true;
 
             case R.id.discard:
-                getActivity().startActivity(new Intent(getActivity(),MainActivity2.class));
+                getActivity().startActivity(new Intent(getActivity(),MainActivity.class));
                 getActivity().finish();
                 return true;
 

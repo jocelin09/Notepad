@@ -69,7 +69,7 @@ public class CheckboxActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         saveNote();
-        startActivity(new Intent(CheckboxActivity.this, MainActivity2.class));
+        startActivity(new Intent(CheckboxActivity.this, MainActivity.class));
         return true;
     }
 
@@ -97,7 +97,7 @@ public class CheckboxActivity extends AppCompatActivity {
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
            // finish(); //return to main activity
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("ActivityName", "Text");
             startActivity(intent);
         }
@@ -140,7 +140,7 @@ public class CheckboxActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.discard) {
-            startActivity(new Intent(CheckboxActivity.this, MainActivity2.class));
+            startActivity(new Intent(CheckboxActivity.this, MainActivity.class));
             finish();
             return true;
         }

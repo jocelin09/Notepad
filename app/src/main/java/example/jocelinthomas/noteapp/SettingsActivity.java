@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
 
-        startActivity(new Intent(SettingsActivity.this,MainActivity2.class));
+        startActivity(new Intent(SettingsActivity.this,MainActivity.class));
         return true;
     }
 
@@ -84,6 +84,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
        // super.onBackPressed();
-        startActivity(new Intent(SettingsActivity.this,MainActivity2.class));
+        startActivity(new Intent(SettingsActivity.this,MainActivity.class));
     }
 }
