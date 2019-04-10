@@ -12,10 +12,6 @@
         android:supportsRtl="true"
         android:fullBackupContent="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".NotesActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
 
         <activity android:name=".SpeechToText"
             android:screenOrientation="portrait"

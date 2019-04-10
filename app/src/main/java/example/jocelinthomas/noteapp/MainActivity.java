@@ -36,7 +36,7 @@ import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
 import static example.jocelinthomas.noteapp.CheckboxActivity.CHECK_EXTRA_Key;
-import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
+//import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
 import static example.jocelinthomas.noteapp.SpeechToText.SPEECH_EXTRA_Key;
 
 public class MainActivity extends AppCompatActivity implements NoteListener {
@@ -219,11 +219,11 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     }
 
 
-    @OnClick(R.id.menu_addnotes)
+  /*  @OnClick(R.id.menu_addnotes)
     public void onNoteClick(View view) {
         startActivity(new Intent(MainActivity.this, NotesActivity.class));
         fab.close(true);
-    }
+    }*/
     @OnClick(R.id.menu_mic)
     public void onMicClick(View view) {
         startActivity(new Intent(MainActivity.this, SpeechToText.class));
@@ -245,9 +245,9 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 
         if (namesct.equals("Notes"))
         {
-            Intent edit = new Intent(this, NotesActivity.class);
+           /* Intent edit = new Intent(this, NotesActivity.class);
             edit.putExtra(NOTE_EXTRA_Key, note.getId());
-            startActivity(edit);
+            startActivity(edit);*/
         }
         else if (namesct.equals("Speech"))
         {

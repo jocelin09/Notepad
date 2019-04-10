@@ -1,6 +1,7 @@
 package example.jocelinthomas.noteapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -45,17 +46,14 @@ import example.jocelinthomas.noteapp.callback.MainActionModeCallback;
 import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
-import static example.jocelinthomas.noteapp.CheckboxActivity.CHECK_EXTRA_Key;
-import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
-import static example.jocelinthomas.noteapp.SpeechToText.SPEECH_EXTRA_Key;
+import static example.jocelinthomas.noteapp.NotesFragment.NOTE_EXTRA_Key;
+import static example.jocelinthomas.noteapp.SpeechFragment.SPEECH_EXTRA_Key;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements NoteListener{
-
-
     Unbinder unbinder;
 
     NotesAdapter adapter;
@@ -218,13 +216,13 @@ public class HomeFragment extends Fragment implements NoteListener{
 
     @OnClick(R.id.menu_mic)
     public void onMicClick(View view) {
-       // MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+         MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).commit();
         fab.close(true);
     }
 
     @OnClick(R.id.menu_checkbox)
     public void onCheckboxClick(View view) {
-      //  MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+        //  MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
         fab.close(true);
     }
 
@@ -239,15 +237,6 @@ public class HomeFragment extends Fragment implements NoteListener{
 
         if (namesct.equals("Notes"))
         {
-/*
-            Bundle bundle = new Bundle();
-            bundle.putInt(NOTE_EXTRA_Key,note.getId()); // set your parameteres
-
-            System.out.println("bundle" +bundle);
-            System.out.println("ID" +note.getId());
-            NotesFragment notesFragment = new NotesFragment();
-            notesFragment.setArguments(bundle);
-*/
 
             NotesFragment notesFragment = new NotesFragment();
             Bundle bundle = new Bundle();
@@ -255,18 +244,24 @@ public class HomeFragment extends Fragment implements NoteListener{
             notesFragment.setArguments(bundle);
 
             System.out.println("note.getId()" +note.getId());
-          MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,notesFragment,null).addToBackStack(null).commit();
+            MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,notesFragment,null).addToBackStack(null).commit();
 
 
         }
         else if (namesct.equals("Speech"))
         {
-          //  MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).addToBackStack(null).commit();
+            SpeechFragment speechFragment = new SpeechFragment();
+            Bundle bundle_speech = new Bundle();
+            bundle_speech.putInt(SPEECH_EXTRA_Key, note.getId());
+            speechFragment.setArguments(bundle_speech);
+
+            System.out.println("note.getId()" +note.getId());
+              MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,speechFragment,null).addToBackStack(null).commit();
 
         }
         else if (namesct.equals("Checkbox"))
         {
-         //   MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new CheckboxFragment(),null).addToBackStack(null).commit();
+            //   MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new CheckboxFragment(),null).addToBackStack(null).commit();
 
         }
     }
@@ -392,7 +387,7 @@ public class HomeFragment extends Fragment implements NoteListener{
         switch (item.getItemId()){
 
             case R.id.menu_settings:
-              // MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SettingsFragment(),null).commit();
+                // MainActivity2.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SettingsFragment(),null).commit();
 
                 getActivity().startActivity(new Intent(getActivity(),SettingsActivity.class));
                 getActivity().finish();
@@ -414,7 +409,7 @@ public class HomeFragment extends Fragment implements NoteListener{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-               return true;
+                return true;
 
             case R.id.menu_sort:
                 sort_list = new String[]{"Alphabetically","Date modified","Date Created"};
@@ -466,6 +461,5 @@ public class HomeFragment extends Fragment implements NoteListener{
 
         unbinder.unbind();
     }
-
     //add back button
 }

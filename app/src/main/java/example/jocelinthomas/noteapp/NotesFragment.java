@@ -57,26 +57,7 @@ public class NotesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*dao = NoteDB.getInstance(getActivity()).noteDao();
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-           // int myInt = bundle.getInt(NOTE_EXTRA_Key, 0);
-            int id = bundle.getInt(NOTE_EXTRA_Key, 0);
-            System.out.println("id"+id);
-            temp = dao.getNoteById(id);
-            System.out.println("Temp" +temp);
-            notetitle.setText(temp.getNoteTitle());
-            txtnote.setText(temp.getNoteText());
-
-            txtnote.setSelection(txtnote.getText().length());
-            txtnote.requestFocus();
-            System.out.println("myInt" + id);
-        }
-        else {
-            notetitle.setFocusable(true);
-            Toast.makeText(getActivity(), "else running", Toast.LENGTH_SHORT).show();
-        }*/
         setHasOptionsMenu(true);
         Toast.makeText(getActivity(), "oncreate", Toast.LENGTH_SHORT).show();
     }

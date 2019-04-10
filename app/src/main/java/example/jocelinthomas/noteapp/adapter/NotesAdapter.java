@@ -1,25 +1,16 @@
 package example.jocelinthomas.noteapp.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
-import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +18,11 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import example.jocelinthomas.noteapp.NotesActivity;
 import example.jocelinthomas.noteapp.R;
-import example.jocelinthomas.noteapp.SpeechToText;
 import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
-import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
+//import static example.jocelinthomas.noteapp.NotesActivity.NOTE_EXTRA_Key;
 
 /**
  * Created by jocelinthomas on 16/03/19.
