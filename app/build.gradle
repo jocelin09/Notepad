@@ -45,10 +45,10 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
 
-  /*  //fab menu
+    //fab menu
     implementation 'com.github.clans:fab:1.6.4'
-*/
+
     //fab circular menu
-    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
 
 }

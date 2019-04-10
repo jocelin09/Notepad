@@ -1,4 +1,5 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,7 +7,7 @@
     android:layout_gravity="top"
     android:background="?attr/backgroundcolor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="example.jocelinthomas.noteapp.MainActivity"
+    tools:context="example.jocelinthomas.noteapp.MainActivity2"
     tools:showIn="@layout/activity_main">
 
 

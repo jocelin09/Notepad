@@ -2,7 +2,6 @@ package example.jocelinthomas.noteapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 /**
  * Created by jocelinthomas on 30/03/19.

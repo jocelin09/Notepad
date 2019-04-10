@@ -48,12 +48,10 @@ public class NotesActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme);
         }
 
-
         setContentView(R.layout.activity_notes);
 
         ButterKnife.bind(this);
 
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -138,6 +136,11 @@ public class NotesActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.reminder)
+        {
+
+            return true;
+        }
         if (id== R.id.share){
             title = notetitle.getText().toString().trim();
             text = txtnote.getText().toString().trim();
@@ -160,11 +163,6 @@ public class NotesActivity extends AppCompatActivity {
            return true;
         }
 
-        if (id == R.id.shareaspdf)
-        {
-
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 

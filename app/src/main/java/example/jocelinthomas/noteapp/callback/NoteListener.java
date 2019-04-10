@@ -10,4 +10,5 @@ public interface NoteListener {
 
     void onNoteClick(Note note);
     void onNoteLongClick(Note note);
+
 }

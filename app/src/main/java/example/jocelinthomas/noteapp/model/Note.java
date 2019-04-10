@@ -2,6 +2,7 @@ package example.jocelinthomas.noteapp.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.text.DateFormat;
@@ -31,6 +32,9 @@ import java.util.Locale;
     @ColumnInfo(name = "activityName")
     private String activityName;
 
+    @Ignore
+    private boolean checked = false;
+
     public Note() {
 
     }
@@ -46,6 +50,7 @@ import java.util.Locale;
         this.noteDate = noteDate;
         this.activityName = activityName;
     }
+
 
     public int getId() {
         return id;
@@ -85,8 +90,17 @@ import java.util.Locale;
         return format.format(new Date(time));
     }
 
+
     public String getActivityName() {
         return activityName;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public void setActivityName(String activityName) {

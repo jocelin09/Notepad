@@ -7,13 +7,22 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -35,13 +44,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     private Context context;
     private ArrayList<Note> notes;
     private NoteListener noteEventListener;
-    //Action mode for toolbar
-    private ActionMode mActionMode;
+
+    private boolean multiCheckMode = false;
+
 
     public  NotesAdapter(Context context, ArrayList<Note> notes){
         this.context = context;
         this.notes = notes;
+
     }
+
     @NonNull
     @Override
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,22 +62,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final NoteHolder holder, final int position) {
         final Note note = getNote(position);
         if (note !=null){
             holder.note_title.setText(note.getNoteTitle());
-          //  holder.note_text.setText(note.getNoteText());
             holder.note_date.setText(note.dateFromLong(note.getNoteDate()));
             Random mRandom = new Random();
             final int color = Color.argb(255, mRandom.nextInt(256), mRandom.nextInt(256), mRandom.nextInt(256));
             ((GradientDrawable) holder.text_icon.getBackground()).setColor(color);
             holder.text_icon.setText(note.getNoteTitle().substring(0,1).trim());
+
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // noteEventListener
                     noteEventListener.onNoteClick(note);
-                    //Toast.makeText(context, "position" +position, Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -73,13 +85,23 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    noteEventListener.onNoteLongClick(note);
-                    return false;
-                }
+                   noteEventListener.onNoteLongClick(note);
+                   return false;
+
+                };
             });
+
+            // check checkBox if note selected
+            if (multiCheckMode) {
+                holder.checkBox.setVisibility(View.VISIBLE); // show checkBox if multiMode on
+                holder.checkBox.setChecked(note.isChecked());
+            } else holder.checkBox.setVisibility(View.GONE); // hide checkBox if multiMode off
+
+
 
         }
     }
+
 
     private Note getNote(int position) {
         return notes.get(position);
@@ -88,20 +110,36 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     @Override
     public int getItemCount() {
         return notes.size();
+      //  return notes == null ? 0 : notes.size();
+    }
+
+    //to get all checked notes
+    public List<Note> getCheckedNotes() {
+        List<Note> checkedNotes = new ArrayList<>();
+        for (Note n : this.notes) {
+            if (n.isChecked())
+                checkedNotes.add(n);
+        }
+
+        return checkedNotes;
     }
 
     public class NoteHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.text_icon)
         TextView text_icon;
 
         @BindView(R.id.note_title)
         TextView note_title;
 
-     /*   @BindView(R.id.note_text)
-        TextView note_text;*/
+        @BindView(R.id.listItemLinearLayout)
+        LinearLayout linearLayout;
 
         @BindView(R.id.note_date)
         TextView note_date;
+
+        @BindView(R.id.checkbox)
+        CheckBox checkBox;
 
         public NoteHolder(View v) {
             super(v);
@@ -115,4 +153,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
         this.noteEventListener = listener;
     }
 
+
+    public void setMultiCheckMode(boolean multiCheckMode) {
+        this.multiCheckMode = multiCheckMode;
+        notifyDataSetChanged();
+    }
 }

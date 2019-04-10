@@ -15,7 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
-import example.jocelinthomas.noteapp.R;
 import example.jocelinthomas.noteapp.model.Note;
 
 public class CheckboxActivity extends AppCompatActivity {
@@ -70,7 +69,7 @@ public class CheckboxActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         saveNote();
-        startActivity(new Intent(CheckboxActivity.this, MainActivity.class));
+        startActivity(new Intent(CheckboxActivity.this, MainActivity2.class));
         return true;
     }
 
@@ -98,7 +97,7 @@ public class CheckboxActivity extends AppCompatActivity {
             Toast.makeText(this, "Saved!!", Toast.LENGTH_SHORT).show();
            // finish(); //return to main activity
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
             intent.putExtra("ActivityName", "Text");
             startActivity(intent);
         }
@@ -141,7 +140,7 @@ public class CheckboxActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.discard) {
-            startActivity(new Intent(CheckboxActivity.this, MainActivity.class));
+            startActivity(new Intent(CheckboxActivity.this, MainActivity2.class));
             finish();
             return true;
         }

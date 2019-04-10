@@ -26,7 +26,12 @@
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainActivity2"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -37,11 +42,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".SettingsActivity"
-            android:label="Settings"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

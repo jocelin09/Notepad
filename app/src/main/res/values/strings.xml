@@ -17,4 +17,5 @@
 
     <string name="notehint">What\'s on your mind.</string>
     <string name="sort">Sort</string>
+    <string name="deletetitle">Are you sure you want to delete?</string>
 </resources>

@@ -5,32 +5,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextThemeWrapper;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
 import example.jocelinthomas.noteapp.adapter.NotesAdapter;
+import example.jocelinthomas.noteapp.callback.MainActionModeCallback;
 import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
@@ -41,17 +42,17 @@ import static example.jocelinthomas.noteapp.SpeechToText.SPEECH_EXTRA_Key;
 public class MainActivity extends AppCompatActivity implements NoteListener {
 
 
-  /*  @BindView(R.id.menu)
-    FloatingActionMenu menu;
+    @BindView(R.id.fab)
+    FloatingActionMenu fab;
+
     @BindView(R.id.menu_addnotes)
     FloatingActionButton menu_addnotes;
+
     @BindView(R.id.menu_mic)
     FloatingActionButton menu_mic;
-    @BindView(R.id.menu_checkbox)
-    FloatingActionButton menu_checkbox;*/
 
-  /*  @BindView(R.id.menu_brush)
-    FloatingActionButton menu_brush;*/
+    @BindView(R.id.menu_checkbox)
+    FloatingActionButton menu_checkbox;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -71,18 +72,25 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     ArrayList<Note> noteArrayList;
     private NoteDao dao;
     SharedPref sharedPref;
-     String actName ="blank";
 
-     String[] sort_list;
+    // SharedPreferences sharedPreferences;
+    String[] sort_list;
+
+    private MainActionModeCallback mainActionModeCallback;
+    private int checkedCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         sharedPref = new SharedPref(this);
         if (sharedPref.loadNightMode() == true) {
             setTheme(R.style.DarkTheme);
+            Toast.makeText(this, "Dark theme", Toast.LENGTH_SHORT).show();
         } else {
             setTheme(R.style.AppTheme);
+            Toast.makeText(this, "Light theme", Toast.LENGTH_SHORT).show();
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -92,80 +100,39 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(itemDecoration);
 
+        recyclerView.addItemDecoration(itemDecoration);
         dao = NoteDB.getInstance(this).noteDao();
 
-        // in Activity Context
-        ImageView icon = new ImageView(this); // Create an icon
-        icon.setImageResource(R.drawable.ic_add_black_24dp);
-        final FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(icon)
-                .build();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-
-        ImageView noteicon = new ImageView(this);
-        noteicon.setImageResource(R.drawable.ic_action_edit);
-        // noteicon.setBackgroundResource(R.color.colorAccent);
-        SubActionButton button1 = itemBuilder.setContentView(noteicon).build();
-
-        ImageView micicon = new ImageView(this);
-        micicon.setImageResource(R.drawable.ic_action_mic);
-        //micicon.setBackgroundResource(R.color.colorAccent);
-        SubActionButton button2 = itemBuilder.setContentView(micicon).build();
-
-
-        ImageView checkicon = new ImageView(this);
-        checkicon.setImageResource(R.drawable.ic_check_circle_black_24dp);
-        //checkicon.setBackgroundResource(R.color.colorAccent);
-        SubActionButton button3 = itemBuilder.setContentView(checkicon).build();
-
-        final FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(button1)
-                .addSubActionView(button2)
-                .addSubActionView(button3)
-                .attachTo(actionButton)
-                .enableAnimations()
-                .build();
-
-        button1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NotesActivity.class));
-                actionMenu.close(true);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab.isShown())
+                    fab.hideMenu(true);
             }
-        });
 
-        button2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SpeechToText.class));
-                actionMenu.close(true);
-            }
-        });
-
-
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CheckboxActivity.class));
-                actionMenu.close(true);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab.showMenu(true);
+                super.onScrollStateChanged(recyclerView, newState);
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        loadNotes();
-
-        super.onResume();
-    }
 
     private void loadNotes() {
+
+//        sharedPreferences = this.getSharedPreferences("example.jocelinthomas.noteapp", Context.MODE_PRIVATE);
+//        sharedPreferences.edit().putString("Sort", "date_modified").apply();
+
         this.noteArrayList = new ArrayList<>();
         List<Note> list = dao.getNote();// get All notes from DataBase
         this.noteArrayList.addAll(list);
@@ -180,6 +147,10 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     }
 
     private void loadNotes1() {
+//        sharedPreferences = this.getSharedPreferences("example.jocelinthomas.noteapp", Context.MODE_PRIVATE);
+//        sharedPreferences.edit().putString("Sort", "date_created").apply();
+
+
         this.noteArrayList = new ArrayList<>();
         List<Note> list = dao.getNote1();// get All notes from DataBase
         this.noteArrayList.addAll(list);
@@ -194,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     }
 
     private void loadNotes2() {
+//        sharedPreferences = this.getSharedPreferences("example.jocelinthomas.noteapp", Context.MODE_PRIVATE);
+//        sharedPreferences.edit().putString("Sort", "alphabetically").apply();
+
         this.noteArrayList = new ArrayList<>();
         List<Note> list = dao.getNote2();// get All notes from DataBase
         this.noteArrayList.addAll(list);
@@ -206,6 +180,33 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         showEmptyRow();
 
     }
+    @Override
+    protected void onResume() {
+       /* Toast.makeText(this, "Resume called", Toast.LENGTH_SHORT).show();
+        System.out.println("Resume called....");
+        String restoredText = sharedPreferences.getString("Sort","");
+
+        Toast.makeText(this, "restoredText:" +restoredText, Toast.LENGTH_SHORT).show();
+        System.out.println("restoredText"+restoredText);
+        if (restoredText.equals("date_modified")) {
+            loadNotes();
+        }
+        else if (restoredText.equals("date_created"))
+        {
+            loadNotes1();
+        }
+        else if (restoredText.equals("alphabetically")){
+            loadNotes2();
+        }
+        else {
+            loadNotes();
+        }*/
+
+        loadNotes();
+        super.onResume();
+    }
+
+
 
     private void showEmptyRow() {
         if (noteArrayList.size() == 0) {
@@ -217,26 +218,25 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         }
     }
 
-/*
-    @OnClick(R.id)
+
+    @OnClick(R.id.menu_addnotes)
     public void onNoteClick(View view) {
         startActivity(new Intent(MainActivity.this, NotesActivity.class));
-        menu.close(true);
+        fab.close(true);
     }
     @OnClick(R.id.menu_mic)
     public void onMicClick(View view) {
         startActivity(new Intent(MainActivity.this, SpeechToText.class));
-        menu.close(true);
+        fab.close(true);
 
     }
     @OnClick(R.id.menu_checkbox)
     public void onCheckClick(View view) {
         startActivity(new Intent(MainActivity.this, CheckboxActivity.class));
-        menu.close(true);
-    }*/
+        fab.close(true);
+    }
 
 
-    //*************************************ALERT CHECK THIS CODE***************************************//
     @Override
     public void onNoteClick(Note note) {
 
@@ -265,28 +265,113 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 
 
     }
-    //*************************************ALERT END CHECK THIS CODE***************************************//
 
     @Override
     public void onNoteLongClick(final Note note) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Note App").setMessage("Are you sure?").
-                setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dao.deleteNote(note);
-                        loadNotes(); //refresh items
-                    }
-                }).setNegativeButton("Share", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "Share", Toast.LENGTH_SHORT).show();
-            }
-        }).setCancelable(false).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).show();
 
+       note.setChecked(true);
+       checkedCount = 1;
+
+       adapter.setMultiCheckMode(true);
+
+        adapter.setListener(new NoteListener() {
+            @Override
+            public void onNoteClick(Note note) {
+                note.setChecked(!note.isChecked());
+                if (note.isChecked())
+                    checkedCount++;
+                else
+                    checkedCount--;
+                if (checkedCount > 1) {
+                    mainActionModeCallback.changeShareItemVisible(false);
+                } else mainActionModeCallback.changeShareItemVisible(true);
+
+                if (checkedCount == 0) {
+                    //  finish multi select mode wen checked count =0
+                    mainActionModeCallback.getAction().finish();
+                }
+
+
+                mainActionModeCallback.setCount(checkedCount+"/"+noteArrayList.size());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNoteLongClick(Note note) {
+            }
+        });
+
+       mainActionModeCallback = new MainActionModeCallback(){
+           @Override
+           public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+               if (item.getItemId() == R.id.action_delete_notes){
+                   onDeleteMultiNotes();
+               }
+               else if (item.getItemId() == R.id.action_share_note){
+                   onShareNote();
+               }
+               mode.finish();
+               return false;
+
+           }
+       };
+       //startaction mode
+        startActionMode(mainActionModeCallback);
+        fab.setVisibility(View.GONE);
+        mainActionModeCallback.setCount(checkedCount+"/"+noteArrayList.size());
+
+    }
+
+    private void onDeleteMultiNotes() {
+
+        final List<Note> checkedNotes = adapter.getCheckedNotes();
+        if (checkedNotes.size() != 0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle(R.string.app_name).setMessage("Are you sure?").
+                    setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            for ( Note note : checkedNotes) {
+                                dao.deleteNote(note);
+                            }
+                            Toast.makeText(getApplicationContext(), checkedNotes.size() + " Note(s) Delete successfully !", Toast.LENGTH_SHORT).show();
+                            // refresh Notes
+                            loadNotes();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+
+
+
+        } else Toast.makeText(getApplicationContext(), "No Note(s) selected", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void onShareNote() {
+
+        Note note = adapter.getCheckedNotes().get(0);
+
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        String notetext = note.getNoteTitle()+": "+note.getNoteText() + "\n\n Created on : " +
+                Note.dateFromLong(note.getNoteDate()) + "\n  By :" +
+                getString(R.string.app_name);
+        share.putExtra(Intent.EXTRA_TEXT, notetext);
+        startActivity(share);
+
+
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        super.onActionModeFinished(mode);
+        adapter.setMultiCheckMode(false);
+        adapter.setListener(this);
+
+        fab.setVisibility(View.VISIBLE);
 
     }
 
@@ -305,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.menu_settings) {
-            //open fragment activity
+            //open settings activity
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             return true;
         }
@@ -368,17 +453,16 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
-      //  super.onBackPressed();
+        //  super.onBackPressed();
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
-      //  finish();
+        //  finish();
     }
 
 }
