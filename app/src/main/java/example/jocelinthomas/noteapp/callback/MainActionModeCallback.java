@@ -3,17 +3,21 @@ package example.jocelinthomas.noteapp.callback;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.Toast;
 
 import example.jocelinthomas.noteapp.R;
+import example.jocelinthomas.noteapp.adapter.NotesAdapter;
 
 /**
  * Created by jocelinthomas on 08/04/19.
  */
 
-public class MainActionModeCallback implements ActionMode.Callback {
+public class MainActionModeCallback implements ActionMode.Callback{
     private ActionMode action;
     private MenuItem countItem;
     private MenuItem shareItem;
+    NotesAdapter adapter;
 
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -37,6 +41,8 @@ public class MainActionModeCallback implements ActionMode.Callback {
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         mode = null;
+
+
     }
 
     public void setCount(String chackedCount) {
@@ -56,4 +62,22 @@ public class MainActionModeCallback implements ActionMode.Callback {
         return action;
     }
 
+/*
+    @Override
+    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+        if (checked){
+            System.out.println("Checked");
+
+        }
+        else
+        {
+            System.out.println("not checked");
+
+            adapter.setMultiCheckMode(false);
+            adapter.setListener((NoteListener) this);
+
+
+        }
+
+    }*/
 }

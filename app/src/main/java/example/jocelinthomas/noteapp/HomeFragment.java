@@ -210,13 +210,13 @@ public class HomeFragment extends Fragment implements NoteListener{
     @OnClick(R.id.menu_addnotes)
     public void onPenClick(View view) {
         //startActivity(new Intent(getActivity(), NotesActivity.class));
-        MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+        MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).addToBackStack(null).commit();
         fab.close(true);
     }
 
     @OnClick(R.id.menu_mic)
     public void onMicClick(View view) {
-         MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).commit();
+         MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).addToBackStack(null).commit();
         fab.close(true);
     }
 
@@ -318,7 +318,7 @@ public class HomeFragment extends Fragment implements NoteListener{
         };
 
         getActivity().startActionMode(mainActionModeCallback);
-        //fab.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
         mainActionModeCallback.setCount(checkedCount+"/"+noteArrayList.size());
 
     }
@@ -371,6 +371,34 @@ public class HomeFragment extends Fragment implements NoteListener{
         adapter.setListener(this);
 
         fab.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    /*    adapter.setMultiCheckMode(false);
+        adapter.setListener(this);
+
+        fab.setVisibility(View.VISIBLE);*/
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        //super.setUserVisibleHint(isVisibleToUser);
+       /* adapter.setMultiCheckMode(false);
+        adapter.setListener(this);
+*/
+        fab.setVisibility(View.VISIBLE);
+
+
+        if (actionMode != null && !isVisibleToUser) {
+            actionMode.finish();
+        }
 
     }
 
@@ -461,5 +489,6 @@ public class HomeFragment extends Fragment implements NoteListener{
 
         unbinder.unbind();
     }
-    //add back button
+
+
 }

@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity  {
            // Toast.makeText(this, "Dark theme act2", Toast.LENGTH_SHORT).show();
         } else {
             setTheme(R.style.AppTheme);
-           // Toast.makeText(this, "Light theme act2", Toast.LENGTH_SHORT).show();
         }
 
         super.onCreate(savedInstanceState);
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity  {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Toast.makeText(this, "oncreate", Toast.LENGTH_SHORT).show();
 /*
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         shouldDisplayHomeUp();*/
@@ -85,14 +83,36 @@ public class MainActivity extends AppCompatActivity  {
     public void onBackPressed() {
         //  super.onBackPressed();
 
-        Intent intent = new Intent(Intent.ACTION_MAIN);
+        /*Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        startActivity(intent);*/
 
         //  finish();
 
+
+
+        if(getFragmentManager().getBackStackEntryCount() > 0){
+
+           // FragmentManager fm = getFragmentManager();
+//            NotesFragment fragm = (NotesFragment)fragmentManager.findFragmentById(R.id.fragmentContainer);
+//            fragm.saveNote();
+
+            getFragmentManager().popBackStack();
+        }
+
+        else
+        /*{
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }*/
+    //finish();
+        super.onBackPressed();
     }
+
+    //FragmentManager.OnBackStackChangedListener;
 
 
 }

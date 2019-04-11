@@ -13,10 +13,6 @@
         android:fullBackupContent="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".SpeechToText"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-
         <activity android:name=".CheckboxActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
@@ -27,7 +23,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">

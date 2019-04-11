@@ -9,7 +9,7 @@
     android:orientation="vertical"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="example.jocelinthomas.noteapp.MainActivity2">
+    tools:context="example.jocelinthomas.noteapp.MainActivity">
 
 
     <android.support.design.widget.AppBarLayout

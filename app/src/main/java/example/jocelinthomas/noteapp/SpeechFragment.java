@@ -80,7 +80,6 @@ public class SpeechFragment extends Fragment {
 
         dao = NoteDB.getInstance(getActivity()).noteDao();
         Bundle bundle = this.getArguments();
-        Toast.makeText(getActivity(), "bundle" +bundle, Toast.LENGTH_SHORT).show();
 
         if (bundle != null) {
 
@@ -91,12 +90,10 @@ public class SpeechFragment extends Fragment {
             edit_title.setSelection(edit_title.getText().length());
             txtnote2.setText(temp.getNoteText());
             txtnote2.setSelection(txtnote2.getText().length());
-            Toast.makeText(getActivity(), "not null", Toast.LENGTH_SHORT).show();
         }
         else
         {
             edit_title.setFocusable(true);
-            Toast.makeText(getActivity(), "elsee", Toast.LENGTH_SHORT).show();
         }
 
         return v;
@@ -192,7 +189,7 @@ public class SpeechFragment extends Fragment {
 
     }
 
-    private void saveNote() {
+    public void saveNote() {
         title = edit_title.getText().toString().trim();
         text = txtnote2.getText().toString().trim();
         if (title.isEmpty()) {

@@ -59,13 +59,14 @@ public class NotesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        Toast.makeText(getActivity(), "oncreate", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
         View view =  inflater.inflate(R.layout.fragment_notes, container, false);
 
         unbinder = ButterKnife.bind(this, view);
@@ -73,7 +74,6 @@ public class NotesFragment extends Fragment {
 
         dao = NoteDB.getInstance(getActivity()).noteDao();
         Bundle bundle = this.getArguments();
-        Toast.makeText(getActivity(), "bundle" +bundle, Toast.LENGTH_SHORT).show();
 
         if (bundle != null) {
 
@@ -86,16 +86,13 @@ public class NotesFragment extends Fragment {
 
             txtnote.setSelection(txtnote.getText().length());
             txtnote.requestFocus();
-            Toast.makeText(getActivity(), "not null", Toast.LENGTH_SHORT).show();
         }
         else
         {
             notetitle.setFocusable(true);
-            Toast.makeText(getActivity(), "elsee", Toast.LENGTH_SHORT).show();
         }
 
 
-        Toast.makeText(getActivity(), "on create view", Toast.LENGTH_SHORT).show();
         return view;
     }
 
@@ -114,13 +111,11 @@ public class NotesFragment extends Fragment {
             long date = new Date().getTime(); // get current time;
 
             if (temp == null){
-                Toast.makeText(getActivity(), "temp null", Toast.LENGTH_SHORT).show();
                 temp = new Note(title,text,date,activityName);
                 dao.insertNote(temp); //inserts note record to db;
             }
             else
             {
-                Toast.makeText(getActivity(), "temp not null", Toast.LENGTH_SHORT).show();
                 temp.setNoteTitle(title);
                 temp.setNoteText(text);
                 temp.setNoteDate(date);
@@ -128,9 +123,13 @@ public class NotesFragment extends Fragment {
                 dao.updateNote(temp);
             }
             Toast.makeText(getActivity(), "Saved!!", Toast.LENGTH_SHORT).show();
-
             getActivity().startActivity(new Intent(getActivity(),MainActivity.class));
             getActivity().finish();
+
+//            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new HomeFragment(),null)
+//                    .addToBackStack(null).commit();
+
+
         }
     }
 
@@ -171,9 +170,14 @@ public class NotesFragment extends Fragment {
             case R.id.discard:
                 getActivity().startActivity(new Intent(getActivity(),MainActivity.class));
                 getActivity().finish();
+//                MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new HomeFragment(),null)
+//                        .addToBackStack(null).commit();
+
                 return true;
 
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
