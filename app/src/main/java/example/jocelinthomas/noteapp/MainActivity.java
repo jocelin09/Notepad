@@ -20,11 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
@@ -39,6 +43,17 @@ import static example.jocelinthomas.noteapp.SpeechFragment.SPEECH_EXTRA_Key;
 
 public class MainActivity extends AppCompatActivity implements NoteListener{
     public static FragmentManager fragmentManager;
+    @BindView(R.id.fab)
+    FloatingActionMenu fab;
+
+    @BindView(R.id.menu_addnotes)
+    FloatingActionButton menu_addnotes;
+
+    @BindView(R.id.menu_mic)
+    FloatingActionButton menu_mic;
+
+    @BindView(R.id.menu_checkbox)
+    FloatingActionButton menu_checkbox;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -83,37 +98,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
-      /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);*/
-//        getSupportFragmentManager().addOnBackStackChangedListener((FragmentManager.OnBackStackChangedListener) this);
-        //Handle when activity is recreated like on orientation Change
-      //  shouldDisplayHomeUp();
-
-
-/*
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
-        shouldDisplayHomeUp();*/
-
         fragmentManager = getSupportFragmentManager();
-        if (findViewById(R.id.fragmentContainer) != null)
-        {
-            if (savedInstanceState != null)
-            {
-                return;
-            }
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            HomeFragment homeFragment = new HomeFragment();
-            fragmentTransaction.add(R.id.fragmentContainer,homeFragment,null);
-            fragmentTransaction.commit();
-
-
-        }
-
-
-
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -124,27 +109,43 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         dao = NoteDB.getInstance(this).noteDao();
 
         //hide and unhide fab while scrolling recyclerview items
-        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0 || dy < 0 && fab.isShown())
-                    fab.hideMenu(true);
+                   fab.hideMenu(true);
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fab.showMenu(true);
+                   fab.showMenu(true);
                 super.onScrollStateChanged(recyclerView, newState);
             }
-        });*/
+        });
 
-
+    loadNotes();
 
     }
 
+    @OnClick(R.id.menu_addnotes)
+    public void onPenClick(View view) {
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).addToBackStack(null).commit();
+        fab.close(true);
+    }
 
+    @OnClick(R.id.menu_mic)
+    public void onMicClick(View view) {
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SpeechFragment(),null).addToBackStack(null).commit();
+        fab.close(true);
+    }
+
+    @OnClick(R.id.menu_checkbox)
+    public void onCheckboxClick(View view) {
+        //  MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+        fab.close(true);
+    }
     public void loadNotes() {
 
 //        sharedPreferences = this.getSharedPreferences("example.jocelinthomas.noteapp", Context.MODE_PRIVATE);
@@ -312,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         };
         //startaction mode
         startActionMode(mainActionModeCallback);
-        //fab.setVisibility(View.GONE);
+       fab.setVisibility(View.GONE);
         mainActionModeCallback.setCount(checkedCount+"/"+noteArrayList.size());
 
     }
@@ -367,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         adapter.setMultiCheckMode(false);
         adapter.setListener(this);
 
-        //fab.setVisibility(View.VISIBLE);
+      fab.setVisibility(View.VISIBLE);
 
     }
 
@@ -446,14 +447,12 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         }
         return super.onOptionsItemSelected(item);
     }
-    //back not working properly//
 
+    //back not working properly.
     @Override
     public void onBackPressed() {
-        if(getFragmentManager().getBackStackEntryCount() > 0){
+        if(getFragmentManager().getBackStackEntryCount() > 0)
             getFragmentManager().popBackStack();
-        }
-
         else
             super.onBackPressed();
     }
