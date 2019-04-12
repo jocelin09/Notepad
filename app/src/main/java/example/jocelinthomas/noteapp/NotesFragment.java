@@ -126,9 +126,6 @@ public class NotesFragment extends Fragment {
             getActivity().startActivity(new Intent(getActivity(),MainActivity.class));
             getActivity().finish();
 
-//            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new HomeFragment(),null)
-//                    .addToBackStack(null).commit();
-
 
         }
     }
@@ -170,8 +167,6 @@ public class NotesFragment extends Fragment {
             case R.id.discard:
                 getActivity().startActivity(new Intent(getActivity(),MainActivity.class));
                 getActivity().finish();
-//                MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new HomeFragment(),null)
-//                        .addToBackStack(null).commit();
 
                 return true;
 

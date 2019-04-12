@@ -12,7 +12,6 @@
         android:hint="Title"
         android:textColor="?attr/textcolor"
         android:textColorHint="?attr/textcolor"
-        android:layout_below="@+id/appbarlayout"
         android:inputType="textCapSentences"
         android:paddingEnd="12dp"
         android:paddingStart="12dp"

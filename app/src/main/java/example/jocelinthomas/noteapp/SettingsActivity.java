@@ -69,11 +69,9 @@ public class SettingsActivity extends AppCompatActivity {
         if (sharedPref.loadNightMode() == true)
         {
             setTheme(R.style.DarkTheme);
-           // Toast.makeText(this, "Dark theme", Toast.LENGTH_SHORT).show();
         }
         else {
             setTheme(R.style.AppTheme);
-           // Toast.makeText(this, "Light theme", Toast.LENGTH_SHORT).show();
         }
     }
 
