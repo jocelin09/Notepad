@@ -446,6 +446,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         }
         return super.onOptionsItemSelected(item);
     }
+    //back not working properly//
 
     @Override
     public void onBackPressed() {
