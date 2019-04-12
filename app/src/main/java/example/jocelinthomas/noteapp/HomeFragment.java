@@ -11,12 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,22 +32,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
-import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
 import example.jocelinthomas.noteapp.adapter.NotesAdapter;
-import example.jocelinthomas.noteapp.callback.MainActionModeCallback;
-import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
-
-import static example.jocelinthomas.noteapp.NotesFragment.NOTE_EXTRA_Key;
-import static example.jocelinthomas.noteapp.SpeechFragment.SPEECH_EXTRA_Key;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements NoteListener{
+public class HomeFragment extends Fragment{
     Unbinder unbinder;
 
     NotesAdapter adapter;
@@ -61,12 +48,7 @@ public class HomeFragment extends Fragment implements NoteListener{
     private NoteDao dao;
     SharedPref sharedPref;
 
-    // SharedPreferences sharedPreferences;
     String[] sort_list;
-
-    private MainActionModeCallback mainActionModeCallback;
-    private int checkedCount = 0;
-
 
     @BindView(R.id.fab)
     FloatingActionMenu fab;
@@ -80,30 +62,17 @@ public class HomeFragment extends Fragment implements NoteListener{
     @BindView(R.id.menu_checkbox)
     FloatingActionButton menu_checkbox;
 
-    @BindView(R.id.profile_image)
-    CircleImageView profile_image;
-
-    @BindView(R.id.nonotes)
-    TextView nonotes;
-
-    @BindView(R.id.linearlayout)
-    LinearLayout linearlayout;
-
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerView;
-
-    ActionMode actionMode;
 
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    @Override
+  /*  @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,98 +83,13 @@ public class HomeFragment extends Fragment implements NoteListener{
         View v =  inflater.inflate(R.layout.fragment_home, container, false);
 
         unbinder = ButterKnife.bind(this, v);
-        //setHasOptionsMenu(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL);
-
-        recyclerView.addItemDecoration(itemDecoration);
-        dao = NoteDB.getInstance(getActivity()).noteDao();
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fab.isShown())
-                    fab.hideMenu(true);
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fab.showMenu(true);
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+        
 
         return v;
 
     }
 
-
-
-    private void loadNotes() {
-
-//        sharedPreferences = this.getSharedPreferences("example.jocelinthomas.noteapp", Context.MODE_PRIVATE);
-//        sharedPreferences.edit().putString("Sort", "date_modified").apply();
-
-        this.noteArrayList = new ArrayList<>();
-        List<Note> list = dao.getNote();// get All notes from DataBase
-        this.noteArrayList.addAll(list);
-        // System.out.println("actname adapter" +actName);
-        this.adapter = new NotesAdapter(getActivity(), this.noteArrayList);
-
-        //set listener to adapter
-        this.adapter.setListener(this);
-        this.recyclerView.setAdapter(adapter);
-        showEmptyRow();
-
-    }
-
-    private void loadNotes1() {
-        this.noteArrayList = new ArrayList<>();
-        List<Note> list = dao.getNote1();// get All notes from DataBase
-        this.noteArrayList.addAll(list);
-        // System.out.println("actname adapter" +actName);
-        this.adapter = new NotesAdapter(getActivity(), this.noteArrayList);
-
-        //set listener to adapter
-        this.adapter.setListener(this);
-        this.recyclerView.setAdapter(adapter);
-        showEmptyRow();
-    }
-
-    private void loadNotes2() {
-        this.noteArrayList = new ArrayList<>();
-        List<Note> list = dao.getNote2();// get All notes from DataBase
-        this.noteArrayList.addAll(list);
-        // System.out.println("actname adapter" +actName);
-        this.adapter = new NotesAdapter(getActivity(), this.noteArrayList);
-
-        //set listener to adapter
-        this.adapter.setListener(this);
-        this.recyclerView.setAdapter(adapter);
-        showEmptyRow();
-    }
-    private void showEmptyRow() {
-        if (noteArrayList.size() == 0) {
-            linearlayout.setVisibility(View.VISIBLE);
-            this.recyclerView.setVisibility(View.GONE);
-        } else {
-            linearlayout.setVisibility(View.GONE);
-            this.recyclerView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        loadNotes();
-        super.onResume();
-
-
-    }
 
     @OnClick(R.id.menu_addnotes)
     public void onPenClick(View view) {
@@ -226,183 +110,7 @@ public class HomeFragment extends Fragment implements NoteListener{
         fab.close(true);
     }
 
-
-
-    @Override
-    public void onNoteClick(Note note) {
-
-        String namesct = note.getActivityName();
-        System.out.println("nameact::" +namesct);
-
-
-        if (namesct.equals("Notes"))
-        {
-
-            NotesFragment notesFragment = new NotesFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(NOTE_EXTRA_Key, note.getId());
-            notesFragment.setArguments(bundle);
-
-            System.out.println("note.getId()" +note.getId());
-            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,notesFragment,null).addToBackStack(null).commit();
-
-
-        }
-        else if (namesct.equals("Speech"))
-        {
-            SpeechFragment speechFragment = new SpeechFragment();
-            Bundle bundle_speech = new Bundle();
-            bundle_speech.putInt(SPEECH_EXTRA_Key, note.getId());
-            speechFragment.setArguments(bundle_speech);
-
-            System.out.println("note.getId()" +note.getId());
-              MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,speechFragment,null).addToBackStack(null).commit();
-
-        }
-        else if (namesct.equals("Checkbox"))
-        {
-            //   MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new CheckboxFragment(),null).addToBackStack(null).commit();
-
-        }
-    }
-
-
-    @Override
-    public void onNoteLongClick(final Note note) {
-
-        note.setChecked(true);
-        checkedCount = 1;
-
-        adapter.setMultiCheckMode(true);
-
-        adapter.setListener(new NoteListener() {
-            @Override
-            public void onNoteClick(Note note) {
-                note.setChecked(!note.isChecked());
-                if (note.isChecked())
-                    checkedCount++;
-                else
-                    checkedCount--;
-                if (checkedCount > 1) {
-                    mainActionModeCallback.changeShareItemVisible(false);
-                } else mainActionModeCallback.changeShareItemVisible(true);
-
-                if (checkedCount == 0) {
-                    //  finish multi select mode wen checked count =0
-                    mainActionModeCallback.getAction().finish();
-                }
-
-
-                mainActionModeCallback.setCount(checkedCount+"/"+noteArrayList.size());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onNoteLongClick(Note note) {
-            }
-        });
-
-        mainActionModeCallback = new MainActionModeCallback(){
-            @Override
-            public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-                if (item.getItemId() == R.id.action_delete_notes){
-                    onDeleteMultiNotes();
-                }
-                else if (item.getItemId() == R.id.action_share_note){
-                    onShareNote();
-                }
-                mode.finish();
-                return false;
-
-            }
-        };
-
-        getActivity().startActionMode(mainActionModeCallback);
-        fab.setVisibility(View.GONE);
-        mainActionModeCallback.setCount(checkedCount+"/"+noteArrayList.size());
-
-    }
-
-    private void onShareNote() {
-        Note note = adapter.getCheckedNotes().get(0);
-
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        String notetext = note.getNoteTitle()+": "+note.getNoteText() + "\n\n Created on : " +
-                Note.dateFromLong(note.getNoteDate()) + "\n  By :" +
-                getString(R.string.app_name);
-        share.putExtra(Intent.EXTRA_TEXT, notetext);
-        startActivity(share);
-
-    }
-
-    private void onDeleteMultiNotes() {
-
-        final List<Note> checkedNotes = adapter.getCheckedNotes();
-        if (checkedNotes.size() != 0) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-            alertDialogBuilder.setTitle(R.string.app_name).setMessage("Are you sure?").
-                    setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            for ( Note note : checkedNotes) {
-                                dao.deleteNote(note);
-                            }
-                            Toast.makeText(getActivity(), checkedNotes.size() + " Note(s) Delete successfully !", Toast.LENGTH_SHORT).show();
-                            // refresh Notes
-                            loadNotes();
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }).show();
-
-
-
-        } else Toast.makeText(getActivity(), "No Note(s) selected", Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void onActionModeFinished(ActionMode mode) {
-
-        //super.onActionModeFinished(mode);
-        adapter.setMultiCheckMode(false);
-        adapter.setListener(this);
-
-        fab.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    /*    adapter.setMultiCheckMode(false);
-        adapter.setListener(this);
-
-        fab.setVisibility(View.VISIBLE);*/
-        if (actionMode != null) {
-            actionMode.finish();
-        }
-
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        //super.setUserVisibleHint(isVisibleToUser);
-       /* adapter.setMultiCheckMode(false);
-        adapter.setListener(this);
-*/
-        fab.setVisibility(View.VISIBLE);
-
-
-        if (actionMode != null && !isVisibleToUser) {
-            actionMode.finish();
-        }
-
-    }
-
-    @Override
+  /*  @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main,menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -451,15 +159,18 @@ public class HomeFragment extends Fragment implements NoteListener{
                         switch (i)
                         {
                             case 0:
-                                loadNotes2();
+                               // loadNotes2();
+                                Toast.makeText(getActivity(), "load2", Toast.LENGTH_SHORT).show();
                                 break;
 
                             case  1:
-                                loadNotes();
+                                //loadNotes();
+                                Toast.makeText(getActivity(), "load2", Toast.LENGTH_SHORT).show();
                                 break;
 
                             case 2:
-                                loadNotes1();
+                                //loadNotes1();
+                                Toast.makeText(getActivity(), "load2", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         dialog.dismiss();
@@ -481,7 +192,7 @@ public class HomeFragment extends Fragment implements NoteListener{
 
     }
 
-
+*/
 
     @Override
     public void onDestroyView() {

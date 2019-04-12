@@ -216,7 +216,7 @@ public class MainActivity3 extends AppCompatActivity implements NoteListener {
         }
     }
 
-
+//fab
   /*  @OnClick(R.id.menu_addnotes)
     public void onNoteClick(View view) {
         startActivity(new Intent(MainActivity.this, NotesActivity.class));

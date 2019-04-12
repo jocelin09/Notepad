@@ -215,4 +215,16 @@ public class SpeechFragment extends Fragment {
             getActivity().finish();
         }
     }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+
+        super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.menu_sort).setVisible(false);
+        menu.findItem(R.id.menu_settings).setVisible(false);
+        menu.findItem(R.id.menu_shareapp).setVisible(false);
+    }
+
+
 }

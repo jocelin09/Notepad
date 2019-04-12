@@ -14,18 +14,15 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".CheckboxActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
