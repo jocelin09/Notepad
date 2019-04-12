@@ -13,7 +13,6 @@ public class SharedPref {
    private Context context;
     public SharedPref(Context context)
     {
-        //this.context = context;
         sharedPreferences = context.getSharedPreferences("Nightmode",Context.MODE_PRIVATE);
 
     }
@@ -30,7 +29,6 @@ public class SharedPref {
     //this method will load the night mode state
     public boolean loadNightMode()
     {
-        //sharedPreferences = context.getSharedPreferences("Nightmode",Context.MODE_PRIVATE);
         boolean test = sharedPreferences.getBoolean("Nightmode", false);
         return test;
     }

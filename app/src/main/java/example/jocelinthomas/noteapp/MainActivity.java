@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
             case R.id.menu_settings:
 
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-
+                //fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new SettingsFragment(),null).addToBackStack(null).commit();
                 return true;
 
             case R.id.menu_shareapp:
