@@ -10,6 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -24,6 +26,7 @@ public class SettingsFragment extends Fragment {
     SharedPref sharedPref;
     Switch aSwitch;
 
+    FirebaseAnalytics firebaseAnalytics;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -47,6 +50,8 @@ public class SettingsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
         unbinder = ButterKnife.bind(this, v);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
         if (sharedPref.loadNightMode() == true){
             aSwitch.setChecked(true);

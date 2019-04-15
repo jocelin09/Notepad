@@ -1,0 +1,24 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="top"
+    android:orientation="vertical"
+    android:background="?attr/backgroundcolor"
+    tools:context="example.jocelinthomas.noteapp.CheckboxFragment">
+
+    <EditText
+        android:id="@+id/checktitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Title"
+        android:textColorHint="?attr/textcolor"
+        android:inputType="textCapSentences"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="4dp"
+        android:textColor="?attr/textcolor" />
+
+
+</LinearLayout>

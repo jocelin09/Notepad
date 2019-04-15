@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import example.jocelinthomas.noteapp.callback.MainActionModeCallback;
 import example.jocelinthomas.noteapp.callback.NoteListener;
 import example.jocelinthomas.noteapp.model.Note;
 
-import static example.jocelinthomas.noteapp.CheckboxActivity.CHECK_EXTRA_Key;
+import static example.jocelinthomas.noteapp.CheckboxFragment.CHECK_EXTRA_Key;
 import static example.jocelinthomas.noteapp.NotesFragment.NOTE_EXTRA_Key;
 import static example.jocelinthomas.noteapp.SpeechFragment.SPEECH_EXTRA_Key;
 
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
     private MainActionModeCallback mainActionModeCallback;
     private int checkedCount = 0;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -94,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         ButterKnife.bind(this);
 
@@ -127,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
 
     loadNotes();
 
+    mFirebaseAnalytics.setCurrentScreen(this,"MainActivity",null);
+        mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+        //Sets the duration of inactivity that terminates the current session. The default value is 900000 (15 minutes).
+        mFirebaseAnalytics.setSessionTimeoutDuration(900000);
+
     }
 
     @OnClick(R.id.menu_addnotes)
@@ -143,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
 
     @OnClick(R.id.menu_checkbox)
     public void onCheckboxClick(View view) {
-        //  MainActivity.fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new NotesFragment(),null).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer,new CheckboxFragment(),null).addToBackStack(null).commit();
         fab.close(true);
     }
     public void loadNotes() {
@@ -253,9 +266,13 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         }
         else if (namesct.equals("Checkbox"))
         {
-           /* Intent edit = new Intent(this, CheckboxActivity.class);
-            edit.putExtra(CHECK_EXTRA_Key, note.getId());
-            startActivity(edit);*/
+            CheckboxFragment checkboxFragment = new CheckboxFragment();
+            Bundle bundle_check = new Bundle();
+            bundle_check.putInt(CHECK_EXTRA_Key, note.getId());
+            checkboxFragment.setArguments(bundle_check);
+
+            System.out.println("note.getId()" +note.getId());
+            fragmentManager.beginTransaction().replace(R.id.fragmentContainer,checkboxFragment,null).addToBackStack(null).commit();
         }
 
 
@@ -338,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener{
         final List<Note> checkedNotes = adapter.getCheckedNotes();
         if (checkedNotes.size() != 0) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle(R.string.app_name).setMessage("Are you sure?").
+            alertDialogBuilder.setTitle(R.string.app_name).setMessage("Are you sure you want to delete?").
                     setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 

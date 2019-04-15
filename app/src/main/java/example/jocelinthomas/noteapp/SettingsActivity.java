@@ -8,11 +8,15 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
     SharedPref sharedPref;
     Switch aSwitch;
+
+    FirebaseAnalytics firebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPref = new SharedPref(this);
@@ -29,6 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         aSwitch = (Switch) findViewById(R.id.switchmode);
 

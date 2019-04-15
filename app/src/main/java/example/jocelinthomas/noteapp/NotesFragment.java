@@ -1,7 +1,16 @@
 package example.jocelinthomas.noteapp;
 
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,10 +21,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +70,15 @@ public class NotesFragment extends Fragment {
     String activityName = "Notes";
     SharedPref sharedPref;
 
+    ImageView close;
+    Button btnsave;
+    TextView remindertitle,message,currenttime,currentdate;
+    Dialog reminderpopup;
+    Spinner repeatreminder;
+    String amPm;
+    private int mYear,mMonth,mDay;
 
+    FirebaseAnalytics firebaseAnalytics;
     public NotesFragment() {
         // Required empty public constructor
     }
@@ -71,6 +101,13 @@ public class NotesFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            FirebaseAnalytics.getInstance(activity).setCurrentScreen(activity, "NotesFragment", null);
+        }
+
+        reminderpopup = new Dialog(getActivity());
 
         dao = NoteDB.getInstance(getActivity()).noteDao();
         Bundle bundle = this.getArguments();
@@ -91,7 +128,6 @@ public class NotesFragment extends Fragment {
         {
             notetitle.setFocusable(true);
         }
-
 
         return view;
     }
@@ -145,7 +181,7 @@ public class NotesFragment extends Fragment {
                 return true;
 
             case R.id.reminder:
-
+                showPopUp();
                 return true;
 
             case R.id.share:
@@ -172,6 +208,144 @@ public class NotesFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showPopUp() {
+
+
+        reminderpopup.setContentView(R.layout.reminder_popup);
+        close = (ImageView) reminderpopup.findViewById(R.id.close);
+        remindertitle = (TextView) reminderpopup.findViewById(R.id.remindertitle);
+        message = (TextView) reminderpopup.findViewById(R.id.message);
+        currenttime = (TextView) reminderpopup.findViewById(R.id.currenttime);
+        currentdate = (TextView) reminderpopup.findViewById(R.id.currentdate);
+        repeatreminder = (Spinner) reminderpopup.findViewById(R.id.repeatreminder);
+        btnsave = (Button) reminderpopup.findViewById(R.id.btnsave);
+
+        String[] arraySpinner = new String[] {"No repeat", "Daily", "Weekly", "Monthly", "Yearly"};
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reminderpopup.dismiss();
+            }
+        });
+
+
+        //create a date string.
+        String date_n = new SimpleDateFormat("MMMM dd", Locale.getDefault()).format(new Date());
+        //display current date
+        currentdate.setText(date_n);
+
+        currentdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get Current Date
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+
+                                int day = view.getDayOfMonth();
+                                int month = view.getMonth();
+                                int year1 =  view.getYear();
+
+                                final Calendar calendar = Calendar.getInstance();
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd");
+                                calendar.set(year1, month, day);
+                                String dateString = sdf.format(calendar.getTime());
+
+                                currentdate.setText(dateString);
+                                // currentdate.setText(dayOfMonth + "-" + (monthOfYear + 1) );
+                                //currentdate.setText(currentData);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+    });
+
+
+        //Display current time
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm a");
+        String formattedDate = df.format(c.getTime());
+        currenttime.setText(formattedDate);
+
+        currenttime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar calendar = Calendar.getInstance();
+                final int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+                final int currentMinute = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (hourOfDay >= 12) {
+                            amPm = "PM";
+                        } else {
+                            amPm = "AM";
+                        }
+
+                        currenttime.setText(String.format("%02d:%02d", hourOfDay, minute) + amPm);
+                    }
+                },currentHour,currentMinute,false);
+                timePickerDialog.show();
+            }
+
+        });
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.reminder_spinner, arraySpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        repeatreminder.setAdapter(adapter);
+
+
+
+
+        btnsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveReminder();
+
+            }
+        });
+        reminderpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        reminderpopup.setCancelable(false);
+        reminderpopup.show();
+    }
+
+    private void saveReminder() {
+        String interval= String.valueOf(repeatreminder.getSelectedItem());
+        Calendar calendar = Calendar.getInstance();
+        if (interval.equals("Daily"))
+        {
+            Toast.makeText(getActivity(), "Daily reminder:", Toast.LENGTH_SHORT).show();
+            calendar.set(Calendar.HOUR_OF_DAY,23);
+            calendar.set(Calendar.MINUTE,37);
+            calendar.set(Calendar.SECOND,30);
+
+            Intent intent = new Intent(getActivity(),NotifyReceiver.class);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+          //  Toast.makeText(getActivity(), "Time::" +calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+
+        }
+        reminderpopup.dismiss();
     }
 
     @Override

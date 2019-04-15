@@ -18,4 +18,9 @@
     <string name="notehint">What\'s on your mind.</string>
     <string name="sort">Sort</string>
     <string name="deletetitle">Are you sure you want to delete?</string>
+    <string name="remindtext">How often would you like to be reminded to write?</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="norepeat">No repeat</string>
 </resources>

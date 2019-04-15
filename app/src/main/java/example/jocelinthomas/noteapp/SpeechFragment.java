@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -55,6 +57,7 @@ public class SpeechFragment extends Fragment {
     SharedPref sharedPref;
     String activityName = "Speech";
 
+    FirebaseAnalytics firebaseAnalytics;
 
 
     public SpeechFragment() {
@@ -76,7 +79,7 @@ public class SpeechFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_speech, container, false);
 
         unbinder = ButterKnife.bind(this, v);
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
         dao = NoteDB.getInstance(getActivity()).noteDao();
         Bundle bundle = this.getArguments();
