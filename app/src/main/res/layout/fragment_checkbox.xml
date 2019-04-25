@@ -1,11 +1,10 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    android:orientation="vertical"
     android:background="?attr/backgroundcolor"
+    android:orientation="vertical"
     tools:context="example.jocelinthomas.noteapp.CheckboxFragment">
 
     <EditText
@@ -13,12 +12,74 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Title"
-        android:textColorHint="?attr/textcolor"
         android:inputType="textCapSentences"
         android:paddingEnd="12dp"
         android:paddingStart="12dp"
         android:paddingTop="4dp"
-        android:textColor="?attr/textcolor" />
+        android:textColor="?attr/textcolor"
+        android:textColorHint="?attr/textcolor" />
+
+<!--
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkitemlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/textcolor"
+            android:textColorHint="?attr/textcolor"
+            android:hint="@string/additem"
+            android:textSize="15sp"
+            android:text=""/>
+
+
+        <ImageView
+            android:id="@+id/itemclose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+
+            android:src="@drawable/ic_cancel_black_24dp" />
+    </RelativeLayout>
+-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_container"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/additem"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1.8"
+            android:hint="Add Item"
+            android:inputType="textCapSentences"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:textColor="?attr/textcolor"
+            android:textColorHint="?attr/textcolor" />
+
+        <ImageView
+            android:id="@+id/additemtolist"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.2"
+            android:src="@drawable/ic_add_black_24dp"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listitems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 
 </LinearLayout>

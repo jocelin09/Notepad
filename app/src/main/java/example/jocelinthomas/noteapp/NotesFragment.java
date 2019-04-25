@@ -14,6 +14,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +46,8 @@ import butterknife.Unbinder;
 import example.jocelinthomas.noteapp.Database.NoteDB;
 import example.jocelinthomas.noteapp.Database.NoteDao;
 import example.jocelinthomas.noteapp.model.Note;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -182,7 +185,12 @@ public class NotesFragment extends Fragment {
 
             case R.id.reminder:
                 showPopUp();
-                return true;
+                /*ReminderFragment reminderFragment = new ReminderFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainer, reminderFragment ); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+                return true;*/
 
             case R.id.share:
                 title = notetitle.getText().toString().trim();
@@ -254,7 +262,6 @@ public class NotesFragment extends Fragment {
                                                   int monthOfYear, int dayOfMonth) {
 
 
-
                                 int day = view.getDayOfMonth();
                                 int month = view.getMonth();
                                 int year1 =  view.getYear();
@@ -266,8 +273,6 @@ public class NotesFragment extends Fragment {
                                 String dateString = sdf.format(calendar.getTime());
 
                                 currentdate.setText(dateString);
-                                // currentdate.setText(dayOfMonth + "-" + (monthOfYear + 1) );
-                                //currentdate.setText(currentData);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -280,6 +285,7 @@ public class NotesFragment extends Fragment {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("HH:mm a");
         String formattedDate = df.format(c.getTime());
+
         currenttime.setText(formattedDate);
 
         currenttime.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +311,11 @@ public class NotesFragment extends Fragment {
                 timePickerDialog.show();
             }
 
+
         });
+
+        System.out.println("currenttime" +currenttime);
+        System.out.println("currentdate" +currentdate);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.reminder_spinner, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -318,7 +328,28 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveReminder();
+                /*String interval= String.valueOf(repeatreminder.getSelectedItem());
+                Calendar calendar = Calendar.getInstance();
+                //calendar.set(Calendar.HOUR_OF_DAY,currentHour);
+                if (interval.equals("Daily"))
+                {
 
+                    Intent myIntent = new Intent(getActivity() , NotifyReceiver.class);
+                    AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(ALARM_SERVICE);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent, 0);
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.SECOND, 0);
+                    cal.set(Calendar.MINUTE, 0);
+                    cal.set(Calendar.HOUR, 0);
+                    cal.set(Calendar.AM_PM, Calendar.AM);
+                    cal.add(Calendar.DAY_OF_MONTH, 1);
+
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 1000*60*60*24 , pendingIntent);
+
+
+                }
+                reminderpopup.dismiss();*/
             }
         });
         reminderpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -326,14 +357,15 @@ public class NotesFragment extends Fragment {
         reminderpopup.show();
     }
 
+
     private void saveReminder() {
         String interval= String.valueOf(repeatreminder.getSelectedItem());
         Calendar calendar = Calendar.getInstance();
         if (interval.equals("Daily"))
         {
             Toast.makeText(getActivity(), "Daily reminder:", Toast.LENGTH_SHORT).show();
-            calendar.set(Calendar.HOUR_OF_DAY,23);
-            calendar.set(Calendar.MINUTE,37);
+            calendar.set(Calendar.HOUR_OF_DAY,17);
+            calendar.set(Calendar.MINUTE,00);
             calendar.set(Calendar.SECOND,30);
 
             Intent intent = new Intent(getActivity(),NotifyReceiver.class);
@@ -342,10 +374,11 @@ public class NotesFragment extends Fragment {
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
-          //  Toast.makeText(getActivity(), "Time::" +calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(getActivity(), "Time::" +calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
 
         }
         reminderpopup.dismiss();
+
     }
 
     @Override

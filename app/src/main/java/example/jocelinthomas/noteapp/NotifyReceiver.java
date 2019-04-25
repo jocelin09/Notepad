@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import example.jocelinthomas.noteapp.callback.NoteListener;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 /**
  * Created by jocelinthomas on 13/04/19.
  */

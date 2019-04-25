@@ -14,7 +14,7 @@ import example.jocelinthomas.noteapp.model.Note;
  * Created by jocelinthomas on 16/03/19.
  */
 
-@Database(entities = Note.class,version = 2,exportSchema = false)
+@Database(entities = Note.class,version = 1,exportSchema = false)
 
 public abstract class NoteDB extends RoomDatabase{
     public abstract NoteDao noteDao();
